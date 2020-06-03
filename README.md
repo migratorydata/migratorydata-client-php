@@ -63,7 +63,7 @@ try {
         echo $a->getCause() . ' - ' . $a->getDetail() . "\n";
     }
 }
-for ($i = 0; $i <= 3; $i++) {
+while(true) {
     $start = microtime(true);
 
     $message = new MigratoryDataMessage("/server/status", time());

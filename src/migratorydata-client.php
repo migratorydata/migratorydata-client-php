@@ -388,21 +388,21 @@ class ce
 		$this->cg = $cg;
 		$this->cm();
 	}
-	public function cn($co)
+	public function cn($co, $cp = false)
 	{
-		$cp = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
+		$cq = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
 		if (is_null($co)) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_NULL);
 		}
 		if (!($co instanceof MigratoryDataMessage)) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_INVALID);
 		}
-		$cq = $co->getSubject();
-		$cr = $co->getContent();
-		if (is_null($cq) || strlen($cq) == 0) {
+		$cr = $co->getSubject();
+		$cs = $co->getContent();
+		if (is_null($cr) || strlen($cr) == 0) {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, "subject is empty");
 		}
-		if (is_null($cr) || strlen($cr) == 0) {
+		if (is_null($cs) || strlen($cs) == 0) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_NULL, "content of the message is null");
 		}
 		if ($this->ck == -1 || $this->cl == -1) {
@@ -413,25 +413,25 @@ class ce
 			$this->cm();
 		}
 		$b9 = chr(a::c7(k::y));
-		$b9 .= $this->cs(a::bo(a3::ak), a::b8($this->cj));
-		$b9 .= $this->cs(a::bo(a3::a8), a::c3(4));
-		$b9 .= $this->cs(a::bo(a3::az), a::c3(4));
-		$b9 .= $this->cs(a::bo(a3::a4), a::b8($cq));
-		$b9 .= $this->cs(a::bo(a3::a5), a::b8($cr));
-		$ct = $co->getFields();
-		if (is_array($ct) ) {
-			foreach ($ct as $cu) {
-				if ($cu instanceof MigratoryDataField) {
-					$cv = $cu->getName();
-					$cw = $cu->getValue();
-					if (is_null($cv) || strlen($cv) == 0) {
+		$b9 .= $this->ct(a::bo(a3::ak), a::b8($this->cj));
+		$b9 .= $this->ct(a::bo(a3::a8), a::c3(4));
+		$b9 .= $this->ct(a::bo(a3::az), a::c3(4));
+		$b9 .= $this->ct(a::bo(a3::a4), a::b8($cr));
+		$b9 .= $this->ct(a::bo(a3::a5), a::b8($cs));
+		$cu = $co->getFields();
+		if (is_array($cu) ) {
+			foreach ($cu as $cv) {
+				if ($cv instanceof MigratoryDataField) {
+					$cw = $cv->getName();
+					$cx = $cv->getValue();
+					if (is_null($cw) || strlen($cw) == 0) {
 						throw new MigratoryDataException(MigratoryDataException::E_MSG_FIELD_INVALID, "field name is empty");
 					}
-					if (is_null($cw) || strlen($cw) == 0) {
+					if (is_null($cx) || strlen($cx) == 0) {
 						throw new MigratoryDataException(MigratoryDataException::E_MSG_FIELD_INVALID, "field value is empty");
 					}
-					$b9 .= $this->cs(a::bo(a3::ar), a::b8($cv));
-					$b9 .= $this->cs(a::bo(a3::at), a::b8($cw));
+					$b9 .= $this->ct(a::bo(a3::ar), a::b8($cw));
+					$b9 .= $this->ct(a::bo(a3::at), a::b8($cx));
 				} else {
 					throw new MigratoryDataException(MigratoryDataException::E_MSG_FIELD_INVALID);                        
 				}
@@ -439,12 +439,12 @@ class ce
 		} else {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_INVALID);
 		}
-		$cx = "c";
-		if ($cx != null && strlen($cx) > 0) {
-			$b9 .= $this->cs(a::bo(a3::ah), a::b8($cx));
+		$cy = "c";
+		if ($cy != null && strlen($cy) > 0) {
+			$b9 .= $this->ct(a::bo(a3::ah), a::b8($cy));
 		}
-		$b9 .= $this->cs(a::bo(a3::a9), a::c3($this->ck));
-		$b9 .= $this->cs(a::bo(a3::am), a::c3($this->cl));
+		$b9 .= $this->ct(a::bo(a3::a9), a::c3($this->ck));
+		$b9 .= $this->ct(a::bo(a3::am), a::c3($this->cl));
 		$b9 .= chr(a::g);
 		curl_setopt($this->cf, CURLOPT_HTTPHEADER, array('Expect:', 'Connection: Keep-Alive'));
 		curl_setopt($this->cf, CURLOPT_RETURNTRANSFER, true);
@@ -454,47 +454,50 @@ class ce
 		curl_setopt($this->cf, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($this->cf, CURLOPT_CONNECTTIMEOUT_MS, $this->cg);
 		curl_setopt($this->cf, CURLOPT_TIMEOUT, 4);
-		$cy = curl_exec($this->cf);
-		if ($cy == false) {
+		$cz = curl_exec($this->cf);
+		if ($cz == false) {
 			$this->ck = -1;
 			$this->cl = -1;
-			return $cp;
+			return $cq;
 		} else {
-			$headers = c8::cb($cy);		
+			$headers = c8::cb($cz);		
 			if (array_key_exists('reason', $headers)) {
 				$reason = $headers['reason'];
 				if ("OK" == $reason) {
-					$cp  = MigratoryDataClient::NOTIFY_PUBLISH_OK;
+					$cq  = MigratoryDataClient::NOTIFY_PUBLISH_OK;
 				} else if ("NOT_SUBSCRIBED" == $reason) {
-					$cp = MigratoryDataClient::NOTIFY_PUBLISH_NO_SUBSCRIBER;
+					$cq = MigratoryDataClient::NOTIFY_PUBLISH_NO_SUBSCRIBER;
 				} else if ("FAILED" == $reason) {
-					$cp = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
+					$cq = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
 				} else if ("DENY" == $reason) {
-					$cp = MigratoryDataClient::NOTIFY_PUBLISH_DENIED;
+					$cq = MigratoryDataClient::NOTIFY_PUBLISH_DENIED;
 				} else {
-					$cp = MigratoryDataClient::NOTIFY_PUBLISH_TIMEOUT;
+					$cq = MigratoryDataClient::NOTIFY_PUBLISH_TIMEOUT;
 				}
 				if (array_key_exists('error', $headers) && $headers['error'] == "session_lost") {
 					$this->ck = -1;
 					$this->cl = -1;
+					if ($cp == false) {
+						return $this->cn($co, true);
+					}
 				}
 			} else {
-				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "Got publish response: " . $cy);
+				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "Got publish response: " . $cz);
 			}
 		}
-		return $cp;
+		return $cq;
 	}
 	private function cm($ch = null) {
 		$exceptions = array();
 		if (is_null($ch)) {
-			$cz = $this->ci;
+			$d0 = $this->ci;
 			$fail = true;
-			shuffle($cz);
-			foreach ($cz as $d0) {
+			shuffle($d0);
+			foreach ($d0 as $d1) {
 				try {
-					$this->cm($d0);
+					$this->cm($d1);
 					$fail = false;
-					$this->ch = $d0;
+					$this->ch = $d1;
 					break;
 				} catch (MigratoryDataException $e) {
 					$exceptions[] = $e;
@@ -516,10 +519,10 @@ class ce
 				throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, $ch . ', curl_error=' . $error);
 			}
 			$b9 = chr(a::c7(k::l));
-			$b9 .= $this->cs(a::bo(a3::ak), a::b8($this->cj));
-			$b9 .= $this->cs(a::bo(a3::a8), a::c3(4));
-			$b9 .= $this->cs(a::bo(a3::az), a::c3(4));
-			$b9 .= $this->cs(a::bo(a3::a4), a::b8(''));
+			$b9 .= $this->ct(a::bo(a3::ak), a::b8($this->cj));
+			$b9 .= $this->ct(a::bo(a3::a8), a::c3(4));
+			$b9 .= $this->ct(a::bo(a3::az), a::c3(4));
+			$b9 .= $this->ct(a::bo(a3::a4), a::b8(''));
 			$b9 .= chr(a::g);
 			curl_setopt($this->cf, CURLOPT_HTTPHEADER, array('Expect:', 'Connection: Keep-Alive'));
 			curl_setopt($this->cf, CURLOPT_RETURNTRANSFER, true);
@@ -528,26 +531,26 @@ class ce
 			curl_setopt($this->cf, CURLOPT_POSTFIELDS, $b9);
 			curl_setopt($this->cf, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($this->cf, CURLOPT_CONNECTTIMEOUT_MS, $this->cg);
-			$cy = curl_exec($this->cf);
-			if (empty($cy)) {
+			$cz = curl_exec($this->cf);
+			if (empty($cz)) {
 				$error = curl_error($this->cf);
 				curl_close($this->cf);
 				$this->cf = null;
 				throw new MigratoryDataException(MigratoryDataException::E_CONNECTION_FAILED, $ch . ', curl_error=' . $error);
 			} else {
-				$headers = c8::cb($cy);		
+				$headers = c8::cb($cz);		
 				if (array_key_exists('session', $headers) && array_key_exists('workgroup', $headers)) {
 					$this->ck = $headers['session'];
 					$this->cl = $headers['workgroup'];
 				} else {
 					curl_close($this->cf);
 					$this->cf = null;
-					throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, $ch . ", Got connect response: " . $cy);
+					throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, $ch . ", Got connect response: " . $cz);
 				}
 			}
 		}
 	}
-	private function cs($bm, $b9) {
+	private function ct($bm, $b9) {
 		$be = '';
 		$be .= chr($bm);
 		$be .= $b9;
@@ -568,26 +571,26 @@ class MigratoryDataException extends \Exception
 	const E_INVALID_URL = 9;
 	const E_INVALID_PROTOCOL = 10;
 	const E_ENTITLEMENT_TOKEN = 11;
-	protected $d1 = array();
-	protected $d2 = "";
+	protected $d2 = array();
+	protected $d3 = "";
 	protected $code = -1;
 	protected $message = "";
 	public function getCause()
 	{
-		return $this->d2;
+		return $this->d3;
 	}
 	public function getDetail()
 	{
 		return $this->message;
 	}
 	public function getExceptions() {
-		return $this->d1;
+		return $this->d2;
 	}
 	public function __construct($code, $cause = "", $exceptions = array())
 	{
 		$this->code = $code;
-		$this->d2 = $cause;
-		$this->d1 = $exceptions;
+		$this->d3 = $cause;
+		$this->d2 = $exceptions;
 		$this->message = $this->getErrorInfo($code);
 	}
 	private function getErrorInfo($errorCode)
@@ -637,48 +640,48 @@ class MigratoryDataException extends \Exception
 }
 class MigratoryDataField
 {
-	private $d3 = "";
 	private $d4 = "";
-	public function __construct($d3, $d4)
+	private $d5 = "";
+	public function __construct($d4, $d5)
 	{		
-    	$this->d3 = $d3;
-		$this->d4 = $d4;
+    	$this->d4 = $d4;
+		$this->d5 = $d5;
 	}
 	public function getName()
 	{
-		return $this->d3;
+		return $this->d4;
 	}
 	public function getValue()
 	{
-		return $this->d4;
+		return $this->d5;
 	}
 }
 class MigratoryDataMessage
 {
-	private $cq = "";
 	private $cr = "";
-	private $ct = array();
-	public function __construct($cq, $cr, $ct = array())
+	private $cs = "";
+	private $cu = array();
+	public function __construct($cr, $cs, $cu = array())
 	{		
-		if (c8::ca($cq)){
-			$this->cq = $cq;
+		if (c8::ca($cr)){
 			$this->cr = $cr;
-			$this->ct = $ct;
+			$this->cs = $cs;
+			$this->cu = $cu;
 			}
 		else{
-			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, $cq);
+			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, $cr);
 		}
 	}
 	public function getSubject()
 	{
-		return $this->cq;
+		return $this->cr;
 	}
 	public function getContent()
 	{
-		return $this->cr;
+		return $this->cs;
 	}
     public function getFields() {
-        return $this->ct;
+        return $this->cu;
     }
 }
 class MigratoryDataClient
@@ -688,19 +691,19 @@ class MigratoryDataClient
     const NOTIFY_PUBLISH_DENIED = 'NOTIFY_PUBLISH_DENIED';
 	const NOTIFY_PUBLISH_NO_SUBSCRIBER = 'NOTIFY_PUBLISH_NO_SUBSCRIBER';
 	const NOTIFY_PUBLISH_TIMEOUT = 'NOTIFY_PUBLISH_TIMEOUT';
-	private $d5 = null;
 	private $d6 = null;
+	private $d7 = null;
 	private $cg = 1000;
 	public function __construct()
 	{
 	}
-	public function setEntitlementToken($d5)
+	public function setEntitlementToken($d6)
 	{
-		$this->d5 = $d5;
+		$this->d6 = $d6;
 	}
 	public function setServers($ci) 
 	{
-		if (!isset($this->d5) || trim($this->d5) === '') {
+		if (!isset($this->d6) || trim($this->d6) === '') {
 			throw  new MigratoryDataException(MigratoryDataException::E_ENTITLEMENT_TOKEN);
 		}
         if (!is_array($ci) || count($ci) == 0) {
@@ -712,17 +715,17 @@ class MigratoryDataClient
 			}
 		}
         try {
-        	$this->d6 = new ce($ci, $this->d5, $this->cg);
+        	$this->d7 = new ce($ci, $this->d6, $this->cg);
         } catch (MigratoryDataException $e) {
         	throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $e->getExceptions());
         }
     }
 	public function publish($co)
 	{
-		if ($this->d6 == null) {
+		if ($this->d7 == null) {
 			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED);
 		}
-		$response = $this->d6->cn($co);
+		$response = $this->d7->cn($co);
 		return $response;		
 	}
 	public function setConnectionTimeout($cg) {
