@@ -1,0 +1,23 @@
+{
+    "name": "migratorydata/migratorydata-client-php",
+    "type": "library",
+    "description": "MigratoryData Client API for PHP",
+    "keywords": ["websocket", "messaging", "publish-subscribe", "real-time"],
+    "homepage": "https://github.com/migratorydata/migratorydata-client-php",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Migratory Data Systems",
+            "email": "support@migratorydata.com",
+            "homepage": "http://migratorydata.com/",
+            "role": "Owner"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    }
+}

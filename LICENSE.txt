@@ -1,0 +1,161 @@
+By downloading, installing, or using the MigratoryData Software you agree to
+abide by the terms and conditions of the software license agreement in place
+between you, an individual or legal entity, and MigratoryData or, if none
+exists, by the following Developer License Agreement ("Terms and Conditions").
+If you do not agree with the Terms and Conditions, do not install or use the
+MigratoryData Software.
+
+                       DEVELOPER LICENSE AGREEMENT
+
+This Developer License Agreement ("Agreement") is made by and between Migratory
+Data Systems s.r.l., a Romanian company registered with the Trade Registry under
+number J22/430/2004, having its registered office at Aleea M. Sadoveanu, nr 146,
+700490 Iaşi, Romania, and its principal place of business at Bulevardul Carol I,
+nr 27, et 2, 700507 Iaşi, Romania ("MigratoryData") and you, an individual or
+legal entity ("Developer").
+
+1  DEFINITIONS
+
+"MigatoryData Server" shall mean the machine-readable object code of the computer
+software and related documentation provided to Developer by MigratoryData
+pursuant to this Agreement.
+
+"MigratoryData SDK" shall mean any available software development kit provided to
+Developer, including all accompanying application programming interfaces, tools,
+examples, and documentation which enable Developer to create applications to
+interface with the MigratoryData Server.
+
+"Software" shall mean, collectively, the MigratoryData Server and all
+MigratoryData SDKs.
+
+"Term" shall mean the period of time which begins on the day that Software is
+provided to Developer and continue until terminated as set forth in Section 4.
+
+"License Key" shall mean a license key, provided by MigratoryData to Developer
+which enables the MigratoryData Server to operate in a specified configuration.
+
+"MigratoryData Customer" shall mean any person or entity that licensed the
+Software from MigratoryData for production purposes.
+
+"MigratoryData System" shall mean a system or cluster of one or more
+MigratoryData Server instances deployed in a production environment by a
+MigratoryData Customer.
+
+2  LICENSE
+
+2.1  License Grant
+
+1.	Development. Subject to the terms and conditions of this Agreement,
+MigratoryData hereby grants to Developer a limited, non-exclusive,
+non-assignable, non-transferable license to internally use the Software during
+the Term only for the purposes set out below. Developer will:
+   (a)	use MigratoryData SDKs solely for the purpose of developing applications
+        to interface with MigratoryData Server ("Developer’s Applications"); and
+   (b)	use MigratoryData Server solely for testing purposes to ensure that
+        Developer’s Applications can communicate with MigratoryData Server
+Except for the internal testing purposes set out above, nothing in this
+Agreement entitles Developer to use the Software in a production environment. If
+Developer wishes to use the Software for any production purposes, Developer must
+contact MigratoryData to obtain an appropriate production license.
+
+2.	Content Access. In order to access, on an end-user basis, the content of a
+MigratoryData System deployed in a production environment by a MigratoryData
+Customer, MigratoryData grants to Developer, during the Term, the limited right
+to use, for the internal business purposes of the Developer, any MigratoryData
+SDK solely as an integrated part of a Developer’s Application provided that
+Developer will:
+   (a)	integrate Developer’s Application with the authorization functions made
+        available by the MigratoryData SDK;
+   (b)	obtain from the MigratoryData Customer all required consents (including
+        any authorization tokens) to access its MigratoryData System;
+   (c)	limit Developer’s Application such that, at any time, all users of the
+        Developer’s Application will not establish more than 10 (ten) concurrent
+        or simultaneous socket connections to the MigratoryData System; and
+   (d)	not redistribute or make Developer’s Application available in any manner
+        to any third party.
+If Developer wishes to redistribute, make available the Developer’s Application
+to third parties, or increase the concurrent socket connections limit, Developer
+must contact MigratoryData to obtain an appropriate license.
+
+3.	Other License Restrictions
+
+   (a)	Developers acknowledges and agrees that the MigratoryData Server
+        received under this Agreement is restricted by a License Key to support
+        a maximum number of one hundred (100) concurrent connections, unless
+        this limit is increased by MigratoryData (at MigratoryData’s sole
+        discretion) upon Developer’s request;
+   (b)	Developer agrees not to: (i) except as expressly permitted in the
+        previous clause "Content Access", utilize the Software in any production
+        environment, (ii) reverse engineer or decompile the Software,
+        (iii) delete any identifying marks, copyrights, or proprietary right
+        notices contained in the Software, and (iii) rent, lease, lend, license,
+        distribute or otherwise transfer the Software to any third party; and
+   (c)	Software may include various embedded software (and related licenses
+        and notices) licensed by MigratoryData from third parties ("Embedded
+        Software"). Such licenses and notices of Embedded Software are located
+        at http://migratorydata.com/license/third-party-licenses and/or in the
+        folder named THIRD-PARTY-LICENSES of the Software ("Embedded Software
+        Notices") and are made a part of and incorporated by reference into this
+        Agreement. Any licenses granted hereunder do not alter any rights and
+        obligations Developer may have under the Embedded Software Notices.
+        Developer may not use the Embedded Software on a stand-alone basis.
+
+3  AUDIT
+
+Developer acknowledges and agrees that the MigratoryData Server may contain
+functionality that allows License Key verification over the Internet ("Remote
+License Verification"). If Remote License Verification process is blocked in any
+way (for example by use of firewalls or proxies) or Developer does not use a
+valid License Key obtained from MigratoryData, then the MigratoryData Server
+will stop after forty (40) minutes since every start. In addition, MigratoryData
+may, on giving Developer reasonable written notice, have an independent auditor
+conduct an audit of your records, software, facilities, and personnel solely to
+the extent necessary to verify compliance with the terms of this Agreement.
+
+4  TERMINATION
+
+This Agreement shall continue as long as Developer is in compliance with the
+terms specified herein or until otherwise terminated. Developer or MigratoryData
+each may terminate this Agreement for any reason at any time. Developer agrees,
+upon termination, to destroy all copies of the Software within its possession
+or control.
+
+5  PROPRIETARY RIGHTS
+
+Developer acknowledges and agrees that the intellectual property and proprietary
+rights of whatever nature in the Software are and shall remain the exclusive
+property of MigratoryData and/or its suppliers, and nothing in this Agreement
+should be construed as transferring any aspects of such rights to the Developer
+or any third party.
+
+6  WARRANTY DISCLAIMER
+
+THE SOFTWARE IS PROVIDED TO DEVELOPER "AS IS,"WITHOUT ANY WARRANTIES OF ANY
+KIND, INCLUDING, BUT NOT LIMITED TO, WARRANTIES CONCERNING THE INSTALLATION,
+USE, OR PERFORMANCE OF THE SOFTWARE. MIGRATORYDATA AND ITS SUPPLIERS DISCLAIM
+ANY AND ALL WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO ANY WARRANTY OF MERCHANTABILITY FITNESS FOR A PARTICULAR PURPOSE AND/OR
+NON-INFRINGEMENT. MIGRATORYDATA DOES NOT WARRANT THAT: THE PRODUCT WILL MEET
+DEVELOPER’S REQUIREMENTS; OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR
+ERROR-FREE; OR ANY POTENTIAL ERRORS OF THE SOFTWARE WILL BE CORRECTED.
+
+7  LIMITATION OF LIABILITY
+
+IN ANY EVENT, THE LIABILITY OF MIGRATORYDATA TO DEVELOPER FOR ANY REASON AND
+UPON ANY CAUSE OF ACTION SHALL NOT EXCEED FIFTY EURO (€50). FURTHER, IN NO EVENT
+SHALL MIGRATORYDATA BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, LOSS OF USE,
+LOSS OF DATA, LOSS OF PROFITS, OR BUSINESS INTERRUPTION) HOWEVER CAUSED IN
+CONNECTION WITH THE USE OF THE SOFTWARE.
+
+8  MISCELLANEOUS
+
+1.	Governing Law. This Agreement is governed by the laws of Romania in
+    accordance with all relevant directives of the European Union.
+
+2.	Assignment. Developer may not assign this Agreement or its rights or
+    obligations under this Agreement to any person or party without
+    MigratoryData’s written approval.
+
+3.	Notices. All notices under the Agreement will be sent in writing by email
+    with confirmation or registered mail.
