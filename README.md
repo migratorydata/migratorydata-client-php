@@ -1,2 +1,2 @@
 # migratorydata-client-php
-MigratoryData Client for PHP
+MigratoryData Client API for PHP
