@@ -2,15 +2,15 @@
 
 Below you can find a tutorial and usage example. For more information please refer to 
 [MigratoryData Documentation 5.x](https://migratorydata.com/documentation/5.x/api/client/desktop-apps/php/html/index.html).
-[MigratoryData Documentation 6.x](https://migratorydata.com/documentation/6.x/api/enterprise/php/index.html).
+[MigratoryData Documentation 6.x](https://migratorydata.com/docs/sdks-enterprise/php/).
 
 ## Usage ##
-Install the MigratoryData client library 5.x using composer:
+Install the MigratoryData client library 5.x using composer (MigratoryData client version 5 can be used with MigratoryData Server 5.0.*):
 ```console
 $ composer require migratorydata/migratorydata-client-php:5.*
 ```
 
-Install the MigratoryData client library 6.x using composer:
+Install the MigratoryData client library 6.x using composer (MigratoryData client version 6 can be used with the MigratoryData server 6.0.1 or later and the MigratoryData KE server 6.0.1 or later):
 ```console
 $ composer require migratorydata/migratorydata-client-php:6.*
 ```

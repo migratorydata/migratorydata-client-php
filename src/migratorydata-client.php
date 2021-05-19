@@ -982,7 +982,7 @@ class cv
 b1::en();
 class e6
 {
-	const gl = '/^\/([^\/*]+\/)*([^\/*])+$/';
+	const gl = '/^\/([^\/]+\/)*([^\/]+|\*)$/';
 	const gm = "\r\n\r\n";
 	const cn = "Content-Length: ";
 	public static function gn($g8)
@@ -1096,234 +1096,253 @@ class e6
 		}
 	}
 }
-class h4
+class Version
 {
-	private $h5 = 3;
-	private $dd = 6;
+        //      6       h4   xx   h4 xxx
+    // push version h4 API ID h4 API version
+    // ex: for Java with API ID 00 and version 001 => 600001
+    // ex: for C# with API ID 02 and version 006 => 602006
+    // Java - 00
+    // Javascript Legacy - 01
+    // C# - 02
+    // C++ - 03
+    // iOS - 04
+    // Python - 05
+    // PHP Pub - 06
+    // PHP React - 07
+    // NodeJS - 08
+    // Javascript-Browser - 09
+    // Android - 10
+	const VERSION = 606001;
+}
+class h5
+{
+	private $h6 = 3;
+	private $dd = Version::VERSION;
 	private $e3 = 1000;
 	private $ab = false;
 	private $a7 = null;
-	private $h6 = null;
-	private $d1 = null;
 	private $h7 = null;
+	private $d1 = null;
 	private $h8 = null;
+	private $h9 = null;
 	private $cx = null;
 	private $e1 = null;
-	private $h9 = null;
 	private $ha = null;
+	private $hb = null;
 	private $dg = -1;
-	private $hb = false;
-	private $hc = null;
+	private $hc = false;
+	private $hd = null;
 	public function __construct()
 	{
 		$this->cx = MigratoryDataClient::TRANSPORT_WEBSOCKET;
-		$this->h7 = new bs();
-		$this->h8 = new ct();
+		$this->h8 = new bs();
+		$this->h9 = new ct();
 	}
-	public function hd($he = null)
+	public function he($hf = null)
 	{
-		if (is_null($he)) {
-			$hf = array();
-			$hg = true;
-			foreach ($this->h6->an() as $hh) {
+		if (is_null($hf)) {
+			$hg = array();
+			$hh = true;
+			foreach ($this->h7->an() as $hi) {
 				try {
-					$this->hd($hh);
-					$hg = false;
+					$this->he($hi);
+					$hh = false;
 					break;
-				} catch (MigratoryDataException $hi) {
-					$hf[] = $hi;
+				} catch (MigratoryDataException $hj) {
+					$hg[] = $hj;
 				}
 			}
-			if ($hg == true) {
-				throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $hf);
+			if ($hh == true) {
+				throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $hg);
 			}
 		} else {
-			$this->a7 = $he->ag();
-			$this->hj($this->a7, $he->ah());
-			$this->h9 = new dz($this->e1, $this->cx, $this->e3);
-			$this->ha = new ec($this->e1);
-			$this->hk();
-			$this->hl($he->ai());
-			$this->hb = true;
+			$this->a7 = $hf->ag();
+			$this->hk($this->a7, $hf->ah());
+			$this->ha = new dz($this->e1, $this->cx, $this->e3);
+			$this->hb = new ec($this->e1);
+			$this->hl();
+			$this->hm($hf->ai());
+			$this->hc = true;
 		}
 	}
-	private function hj($a7, $a8)
+	private function hk($a7, $a8)
 	{
 		if ($this->ab) {
-			$hm = @stream_context_create();
-			$hn = @stream_context_set_option($hm, 'ssl', 'allow_self_signed', true);
-			if (!$hn) {
+			$hn = @stream_context_create();
+			$ho = @stream_context_set_option($hn, 'ssl', 'allow_self_signed', true);
+			if (!$ho) {
 				throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, "ssl socket creation");
 			}
-			$this->e1 = @stream_socket_client("tlsv1.2://" . $a7 . ":" . $a8, $ho, $hp,
-				$this->e3 / 1000, STREAM_CLIENT_CONNECT, $hm);
+			$this->e1 = @stream_socket_client("tlsv1.2://" . $a7 . ":" . $a8, $hp, $hq,
+				$this->e3 / 1000, STREAM_CLIENT_CONNECT, $hn);
 		} else {
-			$this->e1 = @stream_socket_client("tcp://" . $a7 . ":" . $a8, $ho, $hp,
+			$this->e1 = @stream_socket_client("tcp://" . $a7 . ":" . $a8, $hp, $hq,
 				$this->e3 / 1000);
 		}
 		if (!$this->e1) {
-			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, $hp);
+			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, $hq);
 		}
-		$hq = @stream_set_timeout($this->e1, floor($this->e3 / 1000), (($this->e3 % 1000) * 1000));
-		if ($hq === false) {
+		$hr = @stream_set_timeout($this->e1, floor($this->e3 / 1000), (($this->e3 % 1000) * 1000));
+		if ($hr === false) {
 			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, "Socket set timeout error");
 		}
 	}
-	private function hk()
+	private function hl()
 	{
 		if ($this->cx !== MigratoryDataClient::TRANSPORT_HTTP) {
-			$ay = $this->h7->bq($this->a7, $this->ab);
-			$hr = $this->ha->ed($ay->a0());
-			if ($hr === true) {
-				$hr = $this->h9->e4();
+			$ay = $this->h8->bq($this->a7, $this->ab);
+			$hs = $this->hb->ed($ay->a0());
+			if ($hs === true) {
+				$hs = $this->ha->e4();
 			}
-			if ($hr == false) {
-				$this->hs();
+			if ($hs == false) {
+				$this->ht();
 				throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, "Websocket handshake");
 			}
 		}
 	}
-	private function hl($aa)
+	private function hm($aa)
 	{
-		$ay = $this->h7->bo($this->a7);
-		$this->h8->d0($ay, $this->d1, $this->h5, $this->dd);
-		$this->h7->bp($ay);
-		$hr = $this->ha->ed($ay->a1());
-		if ($hr === true) {
-			$hr = $this->h9->e4();
+		$ay = $this->h8->bo($this->a7);
+		$this->h9->d0($ay, $this->d1, $this->h6, $this->dd);
+		$this->h8->bp($ay);
+		$hs = $this->hb->ed($ay->a1());
+		if ($hs === true) {
+			$hs = $this->ha->e4();
 		}
-		if ($hr == false) {
-			$this->hs();
+		if ($hs == false) {
+			$this->ht();
 			throw new MigratoryDataException(MigratoryDataException::E_CONNECTION_FAILED, $aa . ', socket_error');
 		} else {
-			$headers = e6::go($hr);
+			$headers = e6::go($hs);
 			if (array_key_exists('session', $headers)) {
 				$this->dg = $headers['session'];
                 if (array_key_exists('message_size', $headers)) {
-                    $this->hc = $headers['message_size'];
+                    $this->hd = $headers['message_size'];
                 }
 			} else {
-				$this->hs();
-				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, $aa . ", Got connect response: " . $hr);
+				$this->ht();
+				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, $aa . ", Got connect response: " . $hs);
 			}
 		}
 	}
-	public function ht()
+	public function hu()
 	{
-		$this->hb = false;
-		$this->hs();
+		$this->hc = false;
+		$this->ht();
 	}
-	private function hs()
+	private function ht()
 	{
 		$this->dg = -1;
 		if ($this->e1 != null) {
 			@fclose($this->e1);
 		}
 		$this->e1 = null;
-		$this->h9 = null;
 		$this->ha = null;
+		$this->hb = null;
 	}
-	public function hu($df)
+	public function hv($df)
 	{
-		$hv = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
+		$hw = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
 		if ($this->dg == -1) {
-			$this->hs();
+			$this->ht();
 			try {
-				$this->hd();
-			} catch (MigratoryDataException $hi) {
-				return $hv;
+				$this->he();
+			} catch (MigratoryDataException $hj) {
+				return $hw;
 			}
 		}
-		$ay = $this->h7->bo($this->a7);
-		$this->h8->de($ay, $df, $this->dg);
-		$this->h7->bp($ay);
-        if (isset($this->hc) && ($ay->a2() - $ay->m()) > $this->hc) {
+		$ay = $this->h8->bo($this->a7);
+		$this->h9->de($ay, $df, $this->dg);
+		$this->h8->bp($ay);
+        if (isset($this->hd) && ($ay->a2() - $ay->m()) > $this->hd) {
             return MigratoryDataClient::NOTIFY_MESSAGE_SIZE_LIMIT_EXCEEDED;
         }
-		$hr = $this->ha->ed($ay->a1());
-		if ($hr === true) {
-			$hr = $this->h9->e4();
+		$hs = $this->hb->ed($ay->a1());
+		if ($hs === true) {
+			$hs = $this->ha->e4();
 		}
-		if ($hr == false) {
-			$this->hs();
-			return $hv;
+		if ($hs == false) {
+			$this->ht();
+			return $hw;
 		} else {
-			$headers = e6::go($hr);
+			$headers = e6::go($hs);
 			if (array_key_exists('reason', $headers)) {
 				$reason = $headers['reason'];
 				if ("OK" == $reason) {
-					$hv = MigratoryDataClient::NOTIFY_PUBLISH_OK;
+					$hw = MigratoryDataClient::NOTIFY_PUBLISH_OK;
 				} else if ("DENY" == $reason) {
-					$hv = MigratoryDataClient::NOTIFY_PUBLISH_DENIED;
+					$hw = MigratoryDataClient::NOTIFY_PUBLISH_DENIED;
 				} else {
-					$hv = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
+					$hw = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
 				}
 			} else {
-				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "Got publish response: " . $hr . strlen($hr));
+				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "Got publish response: " . $hs . strlen($hs));
 			}
 		}
-		return $hv;
+		return $hw;
 	}
-	public function hw($al)
+	public function hx($al)
 	{
-		$this->h6 = new aj($al, $this->ab);
+		$this->h7 = new aj($al, $this->ab);
 	}
-	public function hx($d1)
+	public function hy($d1)
 	{
 		$this->d1 = $d1;
 	}
-	public function hy($e3)
+	public function hz($e3)
 	{
 		$this->e3 = $e3;
 	}
-	public function hz($ab)
+	public function i0($ab)
 	{
 		$this->ab = $ab;
-		if (!is_null($this->h6)) {
-			$this->h6->ao($ab);
+		if (!is_null($this->h7)) {
+			$this->h7->ao($ab);
 		}
 	}
-	public function i0($cx)
+	public function i1($cx)
 	{
 		if ($cx === MigratoryDataClient::TRANSPORT_HTTP) {
 			$this->cx = $cx;
-			$this->h7 = new cl();
-			$this->h8->cy();
+			$this->h8 = new cl();
+			$this->h9->cy();
 		}
-	}
-	public function i1()
-	{
-		return $this->h6;
 	}
 	public function i2()
 	{
-		return $this->d1;
+		return $this->h7;
 	}
 	public function i3()
 	{
-		return $this->hb;
+		return $this->d1;
+	}
+	public function i4()
+	{
+		return $this->hc;
 	}
 }
-class i4
+class i5
 {
-	private $i5 = null;
+	private $i6 = null;
 	public function __construct()
 	{
-		$this->i5 = new h4();
+		$this->i6 = new h5();
 	}
-	public function i6($i7)
+	public function i7($i8)
 	{
-		if ($this->i5->i3() === true) {
+		if ($this->i6->i4() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setEntitlementToken() method");
 		}
-		if (trim($i7) === '') {
+		if (trim($i8) === '') {
 			throw  new MigratoryDataException(MigratoryDataException::E_ENTITLEMENT_TOKEN);
 		}
-		$this->i5->hx($i7);
+		$this->i6->hy($i8);
 	}
-	public function i8($al)
+	public function i9($al)
 	{
-		if ($this->i5->i3() === true) {
+		if ($this->i6->i4() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setServers() method");
 		}
 		if (!is_array($al) || count($al) == 0) {
@@ -1334,36 +1353,36 @@ class i4
 				throw new MigratoryDataException(MigratoryDataException::E_INVALID_URL, $addr);
 			}
 		}
-		$this->i5->hw($al);
+		$this->i6->hx($al);
 	}
-	public function hd()
+	public function he()
 	{
-		if ($this->i5->i3() === true) {
+		if ($this->i6->i4() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "connect() method");
 		}
-		$d1 = $this->i5->i2();
+		$d1 = $this->i6->i3();
 		if (!isset($d1)) {
 			throw  new MigratoryDataException(MigratoryDataException::E_ENTITLEMENT_TOKEN);
 		}
-		$h6 = $this->i5->i1();
-		if (!isset($h6)) {
+		$h7 = $this->i6->i2();
+		if (!isset($h7)) {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_URL_LIST, "Before connect() you need to use setServers().");
 		}
 		try {
-			$this->i5->hd();
+			$this->i6->he();
 		} catch (MigratoryDataException $e) {
 			throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $e->getExceptions());
 		}
 	}
-	public function hs()
+	public function ht()
 	{
-		if ($this->i5->i3() === true) {
-			$this->i5->ht();
+		if ($this->i6->i4() === true) {
+			$this->i6->hu();
 		}
 	}
-	public function hu($df)
+	public function hv($df)
 	{
-		if ($this->i5->i3() === false) {
+		if ($this->i6->i4() === false) {
 			throw new MigratoryDataException(MigratoryDataException::E_NOT_CONNECTED, "publish() method");
 		}
 		if (is_null($df)) {
@@ -1372,36 +1391,36 @@ class i4
 		if (!($df instanceof MigratoryDataMessage)) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_INVALID);
 		}
-		$i9 = $df->getSubject();
+		$ia = $df->getSubject();
 		$dw = $df->getContent();
-		if (is_null($i9) || strlen($i9) == 0) {
+		if (is_null($ia) || strlen($ia) == 0) {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, "subject is empty");
 		}
 		if (is_null($dw) || strlen($dw) == 0) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_NULL, "content of the message is null");
 		}
-		return $this->i5->hu($df);
+		return $this->i6->hv($df);
 	}
-	public function ia($ib)
+	public function ib($ic)
 	{
-		if ($this->i5->i3() === true) {
+		if ($this->i6->i4() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setTransport() method");
 		}
-		$this->i5->i0($ib);
+		$this->i6->i1($ic);
 	}
-	public function hz($br)
+	public function i0($br)
 	{
-		if ($this->i5->i3() === true) {
+		if ($this->i6->i4() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setEncryption() method");
 		}
-		$this->i5->hz($br);
+		$this->i6->i0($br);
 	}
-	public function ic($e3)
+	public function id($e3)
 	{
-		if ($this->i5->i3() === true) {
+		if ($this->i6->i4() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setConnectionTimeout() method");
 		}
-		$this->i5->hy($e3);
+		$this->i6->hz($e3);
 	}
 }
 class MigratoryDataException extends \Exception
@@ -1418,13 +1437,13 @@ class MigratoryDataException extends \Exception
 	const E_ENTITLEMENT_TOKEN = 11;
 	const E_RUNNING = 12;
 	const E_NOT_CONNECTED = 13;
-	protected $hf = array();
-	protected $id = "";
+	protected $hg = array();
+	protected $ie = "";
 	protected $code = -1;
 	protected $message = "";
 	public function getCause()
 	{
-		return $this->id;
+		return $this->ie;
 	}
 	public function getDetail()
 	{
@@ -1432,13 +1451,13 @@ class MigratoryDataException extends \Exception
 	}
 	public function getExceptions()
 	{
-		return $this->hf;
+		return $this->hg;
 	}
 	public function __construct($code, $cause = "", $exceptions = array())
 	{
 		$this->code = $code;
-		$this->id = $cause;
-		$this->hf = $exceptions;
+		$this->ie = $cause;
+		$this->hg = $exceptions;
 		$this->message = $this->getErrorInfo($code);
 	}
 	private function getErrorInfo($errorCode)
@@ -1495,25 +1514,25 @@ class QoS
 }
 class MigratoryDataMessage
 {
-	private $i9 = "";
+	private $ia = "";
 	private $dw = "";
-	private $ie = null;
 	private $ig = null;
-    protected $ih;
+	private $ih = null;
+    protected $ii;
     public function __construct($subject, $content, $qos = QoS::GUARANTEED, $retained = true)
 	{
 		if (e6::gn($subject)) {
-			$this->i9 = $subject;
+			$this->ia = $subject;
 			$this->dw = $content;
-			$this->ie = $qos;
-			$this->ig = $retained;
+			$this->ig = $qos;
+			$this->ih = $retained;
 		} else {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, $subject);
 		}
 	}
 	public function getSubject()
 	{
-		return $this->i9;
+		return $this->ia;
 	}
 	public function getContent()
 	{
@@ -1521,19 +1540,19 @@ class MigratoryDataMessage
 	}
 	public function getQos()
 	{
-		return $this->ie;
+		return $this->ig;
 	}
 	public function isRetained()
 	{
-		return $this->ig;
+		return $this->ih;
 	}
     public function setCompressed($compressionBool)
     {
-        $this->ih = $compressionBool;
+        $this->ii = $compressionBool;
     }
     public function isCompressed()
     {
-        return $this->ih;
+        return $this->ii;
     }
 }
 class MigratoryDataClient
@@ -1544,41 +1563,41 @@ class MigratoryDataClient
     const NOTIFY_PUBLISH_DENIED = 'NOTIFY_PUBLISH_DENIED';
 	const TRANSPORT_HTTP = 'TRANSPORT_HTTP';
 	const TRANSPORT_WEBSOCKET = 'TRANSPORT_WEBSOCKET';
-	private $ii = null;
+	private $ij = null;
 	public function __construct()
 	{
-		$this->ii = new i4();
+		$this->ij = new i5();
 	}
-	public function setEntitlementToken($i7)
+	public function setEntitlementToken($i8)
 	{
-		$this->ii->i6($i7);
+		$this->ij->i7($i8);
 	}
 	public function setServers($al)
 	{
-		$this->ii->i8($al);
+		$this->ij->i9($al);
 	}
 	public function connect()
 	{
-		$this->ii->hd();
+		$this->ij->he();
 	}
 	public function disconnect()
 	{
-		$this->ii->hs();
+		$this->ij->ht();
 	}
 	public function publish($df)
 	{
-		return $this->ii->hu($df);
+		return $this->ij->hv($df);
 	}
-	public function setTransport($ib)
+	public function setTransport($ic)
 	{
-		$this->ii->ia($ib);
+		$this->ij->ib($ic);
 	}
 	public function setEncryption($br)
 	{
-		$this->ii->hz($br);
+		$this->ij->i0($br);
 	}
 	public function setConnectionTimeout($e3)
 	{
-		$this->ii->ic($e3);
+		$this->ij->id($e3);
 	}
 }
