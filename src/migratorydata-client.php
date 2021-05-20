@@ -1113,7 +1113,7 @@ class Version
     // NodeJS - 08
     // Javascript-Browser - 09
     // Android - 10
-	const VERSION = 606001;
+	const VERSION = 6;
 }
 class h5
 {
