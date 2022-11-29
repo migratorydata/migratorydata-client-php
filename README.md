@@ -133,6 +133,7 @@ catch (MigratoryDataException $e)
 	//		E_CLUSTER_MEMBERS_CONNECTION_FAILED
 	//		E_ENTITLEMENT_TOKEN
 	//		E_RUNNING
+	//      E_CONNECTION_DENY
 	// See the documenation of MigratoryDataException for more details
 	echo("Exception: " . $e->getDetail() . "\n");
 	exit(1);
