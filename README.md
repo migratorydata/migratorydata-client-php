@@ -1,18 +1,18 @@
 # MigratoryData Client for PHP 5.x & 6.x #
 
-Below you can find a tutorial and usage example. For more information please refer to 
-[MigratoryData Documentation 5.x](https://migratorydata.com/documentation/5.x/api/client/desktop-apps/php/html/index.html).
-[MigratoryData Documentation 6.x](https://migratorydata.com/docs/sdks-enterprise/php/).
+Below you can find a tutorial and usage example. For more information please refer to [MigratoryData Documentation 6.x](https://migratorydata.com/docs/client-api/php/).
 
 ## Usage ##
-Install the MigratoryData client library 5.x using composer (MigratoryData client version 5 can be used with MigratoryData Server 5.0.*):
-```console
-$ composer require migratorydata/migratorydata-client-php:5.*
+Install the MigratoryData client library **5.x** using composer (MigratoryData client version 5 can be used with MigratoryData Server 5.0.*):
+
+```bash
+composer require migratorydata/migratorydata-client-php:5.*
 ```
 
-Install the MigratoryData client library 6.x using composer (MigratoryData client version 6 can be used with the MigratoryData server 6.0.1 or later and the MigratoryData KE server 6.0.1 or later):
-```console
-$ composer require migratorydata/migratorydata-client-php:6.*
+Install the MigratoryData client library **6.x** using composer (MigratoryData client version 6 can be used with the MigratoryData server 6.0.1 or later):
+
+```bash
+composer require migratorydata/migratorydata-client-php:6.*
 ```
 
 
@@ -48,12 +48,19 @@ $response = $client->publish($message);
 
 Copy the code below to a file named `echo-time-client.php` and run it using the following command:
 
-```console  
-$ php echo-time-client.php
+```bash
+php echo-time-client.php
 ```
 
-Example for Client API for PHP V5
+Example for Client API for **PHP V5**
 The client application connects to the MigratoryData server deployed at `localhost:8800` and publishes a message every second on the subject `/server/status`.
+
+If you don't have a MigratoryData server installed on your machine but there is docker installed you can run the following command to start MigratoryData server, otherwise you can download and install the latest version for your os from [here](https://migratorydata.com/downloads/migratorydata-6/).
+
+```bash
+docker pull migratorydata/server:latest
+docker run -d --name my_migratorydata -p 8800:8800 migratorydata/server:latest
+```
 
 ```php
 <?php
@@ -73,7 +80,7 @@ try {
 	//		E_INVALID_URL_LIST
 	//		E_CLUSTER_MEMBERS_CONNECTION_FAILED
 	//		E_ENTITLEMENT_TOKEN
-	// See the documenation of MigratoryDataException for more details
+	// See the documentation of MigratoryDataException for more details
 	echo("Exception: " . $e->getDetail() . "\n");
 	exit(1);
 }
@@ -102,7 +109,7 @@ while(true) {
 } 
 ```
 
-Example for Client API for PHP V6
+Example for Client API for **PHP V6**
 The client application connects to the MigratoryData server deployed at `localhost:8800` and publishes a message every second on the subject `/server/status`.
 
 ```php
@@ -134,7 +141,7 @@ catch (MigratoryDataException $e)
 	//		E_ENTITLEMENT_TOKEN
 	//		E_RUNNING
 	//      E_CONNECTION_DENY
-	// See the documenation of MigratoryDataException for more details
+	// See the documentation of MigratoryDataException for more details
 	echo("Exception: " . $e->getDetail() . "\n");
 	exit(1);
 }
