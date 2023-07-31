@@ -282,291 +282,312 @@ class ax
 }
 interface bo
 {
-	public function bp($a8);
-	public function bq($az);
-	public function br($a8, $bs);
+	public function bp($a8, $bq);
+	public function br($az);
+	public function bs($a8, $bt, $bq);
 }
-class bt implements bo
+class bu implements bo
 {
-	private $bu = "GET /WebSocketConnection HTTP/1.1";
-	private $bv = "GET /WebSocketConnection-Secure HTTP/1.1";
-	private $bw = "Host: ";
-	private $bx = "Origin: ";
-	private $by = "Upgrade: websocket";
-	private $bz = "Sec-WebSocket-Key: 23eds34dfvce4";
-	private $c0 = "Sec-WebSocket-Version: 13";
-	private $c1 = "Sec-WebSocket-Protocol: pushv1";
-	private $c2 = "Connection: Upgrade";
-	private $c3 = "\r\n";
-	private $c4 = 10;
-	private $c5 = -128;
+	private $bv = "GET /WebSocketConnection HTTP/1.1";
+	private $bw = "GET /WebSocketConnection-Secure HTTP/1.1";
+	private $bx = "Host: ";
+	private $by = "Origin: ";
+	private $bz = "Upgrade: websocket";
+	private $c0 = "Sec-WebSocket-Key: ";
+	private $c1 = "Sec-WebSocket-Version: 13";
+	private $c2 = "Sec-WebSocket-Protocol: pushv1";
+	private $c3 = "Connection: Upgrade";
+	private $c4 = "\r\n";
+	private $c5 = 10;
 	private $c6 = -128;
-	private $c7 = 0x02;
+	private $c7 = -128;
+	private $c8 = 0x02;
 	public function __construct()
 	{
 	}
-	public function bp($a8)
+	public function bp($a8, $bq)
 	{
 		$az = new a();
-		for ($bh = 0; $bh < $this->c4; $bh++) {
+		for ($bh = 0; $bh < $this->c5; $bh++) {
 			$az->j(chr(0x00));
 		}
 		for ($bh = 0; $bh < 4; $bh++) {
-			$c8 = chr(rand(0, 100));
-			$az->j($c8);
-			$az->k($c8);
+			$c9 = chr(rand(0, 100));
+			$az->j($c9);
+			$az->k($c9);
 		}
 		$az->t();
 		return $az;
 	}
-	public function bq($az)
+	public function br($az)
 	{
-		$bb = chr($this->c5) | chr($this->c7);
+		$bb = chr($this->c6) | chr($this->c8);
 		$az->u();
-		$c9 = $az->y() - $az->x();
-		$ca = $this->cb($c9);
-		$cc = $this->cd($c9, $ca);
-		$ce = 0;
-		if ($ca === 1) {
-			$ce = 8;
-			$az->n($ce, $bb);
-			$az->n($ce + 1, $cc[0] | chr($this->c6));
-		} else if ($ca === 2) {
-			$ce = 6;
-			$az->n($ce, $bb);
-			$az->n($ce + 1, chr(126) | chr($this->c6));
+		$ca = $az->y() - $az->x();
+		$cb = $this->cc($ca);
+		$cd = $this->ce($ca, $cb);
+		$cf = 0;
+		if ($cb === 1) {
+			$cf = 8;
+			$az->n($cf, $bb);
+			$az->n($cf + 1, $cd[0] | chr($this->c7));
+		} else if ($cb === 2) {
+			$cf = 6;
+			$az->n($cf, $bb);
+			$az->n($cf + 1, chr(126) | chr($this->c7));
 			for ($bh = 0; $bh <= 1; $bh++) {
-				$az->n($ce + 2 + $bh, $cc[$bh]);
+				$az->n($cf + 2 + $bh, $cd[$bh]);
 			}
 		} else {
-			$az->n($ce, $bb);
-			$az->n($ce + 1, chr(127) | chr($this->c6));
+			$az->n($cf, $bb);
+			$az->n($cf + 1, chr(127) | chr($this->c7));
 			for ($bh = 0; $bh <= 7; $bh++) {
-				$az->n($ce + 2 + $bh, $cc[$bh]);
+				$az->n($cf + 2 + $bh, $cd[$bh]);
 			}
 		}
-		$az->g($ce);
+		$az->g($cf);
 	}
-	public function br($a8, $bs)
+	public function bs($a8, $bt, $bq)
 	{
 		$az = new a();
-		if (!$bs) {
-			$az->j($this->bu);
-		} else {
+		if (!$bt) {
 			$az->j($this->bv);
+		} else {
+			$az->j($this->bw);
 		}
-		$az->j($this->c3);
-		$az->j($this->bx);
-		$az->j("http://" . $a8);
-		$az->j($this->c3);
-		$az->j($this->bw);
-		$az->j($a8);
-		$az->j($this->c3);
+		$az->j($this->c4);
 		$az->j($this->by);
-		$az->j($this->c3);
-		$az->j($this->c2);
-		$az->j($this->c3);
+		$az->j("http://" . $a8);
+		$az->j($this->c4);
+		$az->j($this->bx);
+		$az->j($a8);
+		$az->j($this->c4);
 		$az->j($this->bz);
+		$az->j($this->c4);
 		$az->j($this->c3);
+		$az->j($this->c4);
+		foreach($bq as $name => $value) {
+			$az->j($name);
+			$az->j(": ");
+			$az->j($value);
+			$az->j($this->c4);
+		}
 		$az->j($this->c0);
-		$az->j($this->c3);
+		$az->j($this->cg());
+		$az->j($this->c4);
 		$az->j($this->c1);
-		$az->j($this->c3);
-		$az->j($this->c3);
+		$az->j($this->c4);
+		$az->j($this->c2);
+		$az->j($this->c4);
+		$az->j($this->c4);
 		return $az;
 	}
-	private function cb($cf)
+	private function cc($ch)
 	{
-		if ($cf <= 125) {
+		if ($ch <= 125) {
 			return 1;
-		} else if ($cf <= 65535) {
+		} else if ($ch <= 65535) {
 			return 2;
 		}
 		return 8;
 	}
-	private function cd($p, $ca)
+	private function ce($p, $cb)
 	{
 		$az = "";
-		$cg = 8 * $ca - 8;
-		for ($bh = 0; $bh < $ca; $bh++) {
-			$ch = $this->ci($p, $cg - 8 * $bh);
-			$cj = $ch - (256 * intval($ch / 256));
-			$az .= chr($cj);
+		$ci = 8 * $cb - 8;
+		for ($bh = 0; $bh < $cb; $bh++) {
+			$cj = $this->ck($p, $ci - 8 * $bh);
+			$cl = $cj - (256 * intval($cj / 256));
+			$az .= chr($cl);
 		}
 		return $az;
 	}
-	private function ci($ck, $cl)
+	private function ck($cm, $cn)
 	{
-		return ($ck % 0x100000000) >> $cl;
+		return ($cm % 0x100000000) >> $cn;
+	}
+	private function cg() 
+	{
+		$key = '';
+        for ($i = 0; $i < 16; $i++) {
+            $key .= chr(rand(33, 126));
+        }
+        return base64_encode($key);
 	}
 }
-class cm implements bo
+class co implements bo
 {
-	private $cn = "POST / HTTP/1.1";
-	private $bw = "Host: ";
-	private $co = "Content-Length: ";
-	private $cp = "00000";
-	private $c3 = "\r\n";
+	private $cp = "POST / HTTP/1.1";
+	private $bx = "Host: ";
+	private $cq = "Content-Length: ";
+	private $cr = "00000";
+	private $c4 = "\r\n";
 	public function __construct()
 	{
 	}
-	public function bp($a8)
+	public function bp($a8, $bq)
 	{
 		$az = new a();
-		$az->j($this->cn);
-		$az->j($this->c3);
-		$az->j($this->bw);
-		$az->j(b2::cq($a8));
-		$az->j($this->c3);
-		$az->j($this->co);
-		$az->r();
 		$az->j($this->cp);
-		$az->j($this->c3);
-		$az->j($this->c3);
+		$az->j($this->c4);
+		$az->j($this->bx);
+		$az->j(b2::cs($a8));
+		$az->j($this->c4);
+		foreach($bq as $name => $value) {
+			$az->j($name);
+			$az->j(": ");
+			$az->j($value);
+			$az->j($this->c4);
+		}
+		$az->j($this->cq);
+		$az->r();
+		$az->j($this->cr);
+		$az->j($this->c4);
+		$az->j($this->c4);
 		$az->s();
 		return $az;
 	}
-	public function bq($az)
+	public function br($az)
 	{
 		$o = $az->a3();
-		$cr = strval($o - $az->w());
-		if (strlen($cr) <= strlen($this->cp)) {
-			$cs = 0;
-			for ($bh = strlen($this->cp) - strlen($cr); $bh < strlen($this->cp); $bh++) {
-				$az->n($az->v() + $bh, $cr[$cs]);
-				$cs++;
+		$ct = strval($o - $az->w());
+		if (strlen($ct) <= strlen($this->cr)) {
+			$cu = 0;
+			for ($bh = strlen($this->cr) - strlen($ct); $bh < strlen($this->cr); $bh++) {
+				$az->n($az->v() + $bh, $ct[$cu]);
+				$cu++;
 			}
 		} else {
-			$ct = substr($az->a0(), 0, $az->v());
-			$ct .= $cr;
-			$ct .= substr($az->a0(), $az->v() + strlen($this->cp));
-			$az->z($ct);
+			$cv = substr($az->a0(), 0, $az->v());
+			$cv .= $ct;
+			$cv .= substr($az->a0(), $az->v() + strlen($this->cr));
+			$az->z($cv);
 		}
 		$az->a1();
 	}
-	public function br($a8, $bs)
+	public function bs($a8, $bt, $bq)
 	{
 		return "";
 	}
 }
-class cu
+class cw
 {
-	private $cv = cw::cx;
-	private $cy = MigratoryDataClient::TRANSPORT_WEBSOCKET;
+	private $cx = cy::cz;
+	private $d0 = MigratoryDataClient::TRANSPORT_WEBSOCKET;
 	public function __construct()
 	{
 	}
-	public function cz()
+	public function d1()
 	{
-		$this->cy = MigratoryDataClient::TRANSPORT_HTTP;
-		$this->cv = cw::d0;
+		$this->d0 = MigratoryDataClient::TRANSPORT_HTTP;
+		$this->cx = cy::d2;
 	}
-	public function d1($az, $d2, $d3, $d4)
+	public function d3($az, $d4, $d5, $d6)
 	{
-		if ($this->cy == MigratoryDataClient::TRANSPORT_HTTP) {
-			$az->j(chr(b2::d5(d6::d7)));
+		if ($this->d0 == MigratoryDataClient::TRANSPORT_HTTP) {
+			$az->j(chr(b2::d7(d8::d9)));
 		} else {
-			$az->j(chr(b2::d5(d6::d7)) ^ $az->l());
+			$az->j(chr(b2::d7(d8::d9)) ^ $az->l());
 		}
-		$az->j($this->d8(b2::d9(da::db), b2::cq($d2), $az));
-		$az->j($this->d8(b2::d9(da::cv), b2::dc($this->cv), $az));
-		$az->j($this->d8(b2::d9(da::dd), b2::dc($d3), $az));
-		$az->j($this->d8(b2::d9(da::de), b2::dc($d4), $az));
-		if ($this->cy == MigratoryDataClient::TRANSPORT_HTTP) {
+		$az->j($this->da(b2::db(dc::dd), b2::cs($d4), $az));
+		$az->j($this->da(b2::db(dc::cx), b2::de($this->cx), $az));
+		$az->j($this->da(b2::db(dc::df), b2::de($d5), $az));
+		$az->j($this->da(b2::db(dc::dg), b2::de($d6), $az));
+		if ($this->d0 == MigratoryDataClient::TRANSPORT_HTTP) {
 			$az->j(chr(b2::b3));
 		} else {
 			$az->j(chr(b2::b3) ^ $az->l());
 		}
 	}
-	public function df($az, $dg, $dh)
+	public function dh($az, $di, $dj)
 	{
-		if ($this->cy == MigratoryDataClient::TRANSPORT_HTTP) {
-			$az->j(chr(b2::d5(d6::di)));
+		if ($this->d0 == MigratoryDataClient::TRANSPORT_HTTP) {
+			$az->j(chr(b2::d7(d8::dk)));
 		} else {
-			$az->j(chr(b2::d5(d6::di)) ^ $az->l());
+			$az->j(chr(b2::d7(d8::dk)) ^ $az->l());
 		}
-		$az->j($this->d8(b2::d9(da::dj), b2::cq($dg->getSubject()), $az));
-        if ($dg->isCompressed()) {
-            $dk = $this->dl($dg->getContent());
-            if (strlen($dk) < strlen($dg->getContent())) {
-                $az->j($this->d8(b2::d9(da::dm), b2::cq($dk), $az));
+		$az->j($this->da(b2::db(dc::dl), b2::cs($di->getSubject()), $az));
+        if ($di->isCompressed()) {
+            $dm = $this->dn($di->getContent());
+            if (strlen($dm) < strlen($di->getContent())) {
+                $az->j($this->da(b2::db(dc::dp), b2::cs($dm), $az));
             } else {
-                $az->j($this->d8(b2::d9(da::dm), b2::cq($dg->getContent()), $az));
-                $dg->setCompressed(false);
+                $az->j($this->da(b2::db(dc::dp), b2::cs($di->getContent()), $az));
+                $di->setCompressed(false);
             }
         } else {
-            $az->j($this->d8(b2::d9(da::dm), b2::cq($dg->getContent()), $az));
+            $az->j($this->da(b2::db(dc::dp), b2::cs($di->getContent()), $az));
         }
-		$dn = "c";
-		if ($dn != null && strlen($dn) > 0) {
-			$az->j($this->d8(b2::d9(da::dp), b2::cq($dn), $az));
+		$dq = "c";
+		if ($dq != null && strlen($dq) > 0) {
+			$az->j($this->da(b2::db(dc::dr), b2::cs($dq), $az));
 		}
-		$az->j($this->d8(b2::d9(da::dq), b2::dc($dh), $az));
-		if ($dg->getQos() == QoS::GUARANTEED) {
-			$az->j($this->d8(b2::d9(da::dr), b2::dc(QoS::GUARANTEED), $az));
+		$az->j($this->da(b2::db(dc::ds), b2::de($dj), $az));
+		if ($di->getQos() == QoS::GUARANTEED) {
+			$az->j($this->da(b2::db(dc::dt), b2::de(QoS::GUARANTEED), $az));
 		} else {
-			$az->j($this->d8(b2::d9(da::dr), b2::dc(QoS::STANDARD), $az));
+			$az->j($this->da(b2::db(dc::dt), b2::de(QoS::STANDARD), $az));
 		}
-		if ($dg->isRetained() == true) {
-			$az->j($this->d8(b2::d9(da::ds), b2::dc(1), $az));
+		if ($di->isRetained() == true) {
+			$az->j($this->da(b2::db(dc::du), b2::de(1), $az));
 		} else {
-			$az->j($this->d8(b2::d9(da::ds), b2::dc(0), $az));
+			$az->j($this->da(b2::db(dc::du), b2::de(0), $az));
 		}
-        if ($dg->isCompressed()) {
-            $az->j($this->d8(b2::d9(da::dt), b2::dc(1), $az));
+        if ($di->isCompressed()) {
+            $az->j($this->da(b2::db(dc::dv), b2::de(1), $az));
         }
-		$az->j($this->d8(b2::d9(da::cv), b2::dc($this->cv), $az));
-		if ($this->cy == MigratoryDataClient::TRANSPORT_HTTP) {
+		$az->j($this->da(b2::db(dc::cx), b2::de($this->cx), $az));
+		if ($this->d0 == MigratoryDataClient::TRANSPORT_HTTP) {
 			$az->j(chr(b2::b3));
 		} else {
 			$az->j(chr(b2::b3) ^ $az->l());
 		}
 	}
-	private function d8($du, $b, $az)
+	private function da($dw, $b, $az)
 	{
-		$dv = '';
-		if ($this->cy == MigratoryDataClient::TRANSPORT_HTTP) {
-			$dv .= chr($du);
-			$dv .= $b;
-			$dv .= chr(b2::dw);
+		$dx = '';
+		if ($this->d0 == MigratoryDataClient::TRANSPORT_HTTP) {
+			$dx .= chr($dw);
+			$dx .= $b;
+			$dx .= chr(b2::dy);
 		} else {
-			$dv .= chr($du) ^ $az->l();
+			$dx .= chr($dw) ^ $az->l();
 			for ($bh = 0; $bh < strlen($b); $bh++) {
-				$dv .= $b[$bh] ^ $az->l();
+				$dx .= $b[$bh] ^ $az->l();
 			}
-			$dv .= chr(b2::dw) ^ $az->l();
+			$dx .= chr(b2::dy) ^ $az->l();
 		}
-		return $dv;
+		return $dx;
 	}
-    public function dl($dx)
+    public function dn($dz)
     {
-        $dy = gzdeflate($dx);
-        if ($dy === false) {
-            return $dx;
+        $e0 = gzdeflate($dz);
+        if ($e0 === false) {
+            return $dz;
         }
-        $dz = base64_encode($dy);
-        return $dz;
+        $e1 = base64_encode($e0);
+        return $e1;
     }
 }
-class e0
+class e2
 {
-	const e1 = 32768;
-	private $e2;
-	private $cy;
-	private $e3;
-	public function __construct($e2, $cy, $e4)
+	const e3 = 32768;
+	private $e4;
+	private $d0;
+	private $e5;
+	public function __construct($e4, $d0, $e6)
 	{
-		$this->e2 = $e2;
-		$this->cy = $cy;
-		$this->e3 = $e4 / 1000;
+		$this->e4 = $e4;
+		$this->d0 = $d0;
+		$this->e5 = $e6 / 1000;
 	}
-	public function e5()
+	public function e7()
 	{
 		$az = new a();
 		$o = -1;
-		$e6 = microtime(true);
+		$e8 = microtime(true);
 		while ($o == -1) {
-			$b = @fread($this->e2, e0::e1);
+			$b = @fread($this->e4, e2::e3);
 			if ($b === false) {
 				return "";
 			}
@@ -574,27 +595,27 @@ class e0
 				return "";
 			}
 			$az->j($b);
-			if ($this->cy === MigratoryDataClient::TRANSPORT_HTTP) {
-				$o = e7::e8($az->a0());
+			if ($this->d0 === MigratoryDataClient::TRANSPORT_HTTP) {
+				$o = e9::ea($az->a0());
 			} else {
 				$o = ax::ay($az);
-				if ($o === -1 && strpos($az->a0(), "Sec-WebSocket-Accept") !== false) {
+				if ($o === -1 && (strpos($az->a0(), "Sec-WebSocket-Accept") !== false || strpos($az->a0(), "sec-websocket-accept") !== false)) {
 					return $az;
 				}
 			}
-			if ($o != -1 && b2::ba($az->q($o)) == b2::d5(d6::e9)) {
-				$ea = 2;
-				if ($this->cy === MigratoryDataClient::TRANSPORT_WEBSOCKET) {
-					$ea++;
+			if ($o != -1 && b2::ba($az->q($o)) == b2::d7(d8::eb)) {
+				$ec = 2;
+				if ($this->d0 === MigratoryDataClient::TRANSPORT_WEBSOCKET) {
+					$ec++;
 				}
-				$eb = $az->a3();
-				$az->z(substr($az->a0(), $o + $ea));
-				if ($eb === $o + $ea) {
+				$ed = $az->a3();
+				$az->z(substr($az->a0(), $o + $ec));
+				if ($ed === $o + $ec) {
 					$o = -1;
 				}
 			}
-			$ec = (microtime(true) - $e6);
-			if ($ec >= $this->e3 && $az->a3() === 0) {
+			$ee = (microtime(true) - $e8);
+			if ($ee >= $this->e5 && $az->a3() === 0) {
 				return "";
 			}
 		}
@@ -602,25 +623,25 @@ class e0
 		return $az;
 	}
 }
-class ed
+class ef
 {
-	private $e2;
-	public function __construct($e2)
+	private $e4;
+	public function __construct($e4)
 	{
-		$this->e2 = $e2;
+		$this->e4 = $e4;
 	}
-	public function ee($b)
+	public function eg($b)
 	{
-		$ef = $b;
-		$eg = strlen($b);
+		$eh = $b;
+		$ei = strlen($b);
 		while (true) {
-			$eh = @fwrite($this->e2, $ef);
-			if ($eh === false) {
+			$ej = @fwrite($this->e4, $eh);
+			if ($ej === false) {
 				return false;
 			}
-			if ($eh < $eg) {
-				$ef = substr($ef, $eh);
-				$eg -= $eh;
+			if ($ej < $ei) {
+				$eh = substr($eh, $ej);
+				$ei -= $ej;
 			} else {
 				break;
 			}
@@ -630,130 +651,130 @@ class ed
 }
 class b2
 {
-	public static $ei = array();
-	public static $ej = array();
 	public static $ek = array();
 	public static $el = array();
-	const em = 0x19;
+	public static $em = array();
+	public static $en = array();
+	const eo = 0x19;
 	const b3 = 0x7F;
-	const dw = 0x1E;
-	const en = 0x1F;
-	public static function eo()
+	const dy = 0x1E;
+	const ep = 0x1F;
+	public static function eq()
 	{
-		self::$ei = array_fill(0, 128, -1);
-		self::$ei[d6::ep] = 0x01;
-		self::$ei[d6::eq] = 0x02;
-		self::$ei[d6::er] = 0x03;
-		self::$ei[d6::e9] = 0x04;
-		self::$ei[d6::es] = 0x05;
-		self::$ei[d6::et] = 0x06;
-		self::$ei[d6::eu] = 0x08;
-		self::$ei[d6::ev] = 0x09;
-		self::$ei[d6::ew] = 0x0C;
-		self::$ei[d6::di] = 0x10;
-		self::$ei[d6::ex] = 0x13;
-		self::$ei[d6::d7] = 0x1A;
-		self::$ei[d6::ey] = 0x07;
-		self::$ei[d6::ez] = 0x0B;
-		self::$ej = array_fill(0, 128, -1);
-		self::$ej[da::dj] = 0x01;
-		self::$ej[da::dm] = 0x02;
-		self::$ej[da::f0] = 0x03;
-		self::$ej[da::f1] = 0x04;
-		self::$ej[da::cv] = 0x05;
-		self::$ej[da::dq] = 0x06;
-		self::$ej[da::f2] = 0x07;
-		self::$ej[da::f3] = 0x08;
-		self::$ej[da::f4] = 0x09;
-		self::$ej[da::f5] = 0x0C;
-		self::$ej[da::f6] = 0x0E;
-		self::$ej[da::f7] = 0x0F;
-		self::$ej[da::dp] = 0x10;
-		self::$ej[da::f8] = 0x11;
-		self::$ej[da::f9] = 0x12;
-		self::$ej[da::db] = 0x13;
-		self::$ej[da::fa] = 0x14;
-		self::$ej[da::fb] = 0x15;
-		self::$ej[da::fc] = 0x16;
-		self::$ej[da::ds] = 0x17;
-		self::$ej[da::dr] = 0x18;
-		self::$ej[da::fd] = 0x1A;
-		self::$ej[da::fe] = 0x1B;
-		self::$ej[da::ff] = 0x1C;
-		self::$ej[da::fg] = 0x1D;
-		self::$ej[da::fh] = 0x20;
-		self::$ej[da::fi] = 0x27;
-		self::$ej[da::fj] = 0x23;
-		self::$ej[da::dd] = 0x24;
-		self::$ej[da::fk] = 0x25;
-		self::$ej[da::de] = 0x2D;
-		self::$ej[da::fl] = 0x1D;
-		self::$ej[da::dt] = 0x26;
-		self::$ej[da::fm] = 0x0B;
-		self::$el = array_fill(0, 255, -1);
-		self::$el[self::b3] = 0x01;
-		self::$el[self::dw] = 0x02;
-		self::$el[self::en] = 0x03;
-		self::$el[fo::fp] = 0x04;
-		self::$el[fo::fq] = 0x05;
-		self::$el[fo::fr] = 0x06;
-		self::$el[fo::fs] = 0x07;
-		self::$el[fo::ft] = 0x08;
-		self::$el[33] = 0x09;
-		self::$el[self::em] = 0x0B;
-		self::$ek = array_fill(0, 255, -1);
+		self::$ek = array_fill(0, 128, -1);
+		self::$ek[d8::er] = 0x01;
+		self::$ek[d8::es] = 0x02;
+		self::$ek[d8::et] = 0x03;
+		self::$ek[d8::eb] = 0x04;
+		self::$ek[d8::eu] = 0x05;
+		self::$ek[d8::ev] = 0x06;
+		self::$ek[d8::ew] = 0x08;
+		self::$ek[d8::ex] = 0x09;
+		self::$ek[d8::ey] = 0x0C;
+		self::$ek[d8::dk] = 0x10;
+		self::$ek[d8::ez] = 0x13;
+		self::$ek[d8::d9] = 0x1A;
+		self::$ek[d8::f0] = 0x07;
+		self::$ek[d8::f1] = 0x0B;
+		self::$el = array_fill(0, 128, -1);
+		self::$el[dc::dl] = 0x01;
+		self::$el[dc::dp] = 0x02;
+		self::$el[dc::f2] = 0x03;
+		self::$el[dc::f3] = 0x04;
+		self::$el[dc::cx] = 0x05;
+		self::$el[dc::ds] = 0x06;
+		self::$el[dc::f4] = 0x07;
+		self::$el[dc::f5] = 0x08;
+		self::$el[dc::f6] = 0x09;
+		self::$el[dc::f7] = 0x0C;
+		self::$el[dc::f8] = 0x0E;
+		self::$el[dc::f9] = 0x0F;
+		self::$el[dc::dr] = 0x10;
+		self::$el[dc::fa] = 0x11;
+		self::$el[dc::fb] = 0x12;
+		self::$el[dc::dd] = 0x13;
+		self::$el[dc::fc] = 0x14;
+		self::$el[dc::fd] = 0x15;
+		self::$el[dc::fe] = 0x16;
+		self::$el[dc::du] = 0x17;
+		self::$el[dc::dt] = 0x18;
+		self::$el[dc::ff] = 0x1A;
+		self::$el[dc::fg] = 0x1B;
+		self::$el[dc::fh] = 0x1C;
+		self::$el[dc::fi] = 0x1D;
+		self::$el[dc::fj] = 0x20;
+		self::$el[dc::fk] = 0x27;
+		self::$el[dc::fl] = 0x23;
+		self::$el[dc::df] = 0x24;
+		self::$el[dc::fm] = 0x25;
+		self::$el[dc::dg] = 0x2D;
+		self::$el[dc::fo] = 0x1D;
+		self::$el[dc::dv] = 0x26;
+		self::$el[dc::fp] = 0x0B;
+		self::$en = array_fill(0, 255, -1);
+		self::$en[self::b3] = 0x01;
+		self::$en[self::dy] = 0x02;
+		self::$en[self::ep] = 0x03;
+		self::$en[fq::fr] = 0x04;
+		self::$en[fq::fs] = 0x05;
+		self::$en[fq::ft] = 0x06;
+		self::$en[fq::fu] = 0x07;
+		self::$en[fq::fv] = 0x08;
+		self::$en[33] = 0x09;
+		self::$en[self::eo] = 0x0B;
+		self::$em = array_fill(0, 255, -1);
 		for ($i = 0; $i <= 128; $i++) {
-			$e = self::fu($i);
+			$e = self::fw($i);
 			if ($e != -1) {
-				self::$ek[$e] = $i;
+				self::$em[$e] = $i;
 			}
 		}
 	}
-	public static function cq($b)
+	public static function cs($b)
 	{
-		$fv = array_merge(unpack('C*', $b));
-		$fw = 0;
-		for ($bh = 0; $bh < count($fv); $bh++) {
-			$fx = self::fu($fv[$bh]);
-			if ($fx != -1) {
-				$fw++;
-			}
-		}
-		if ($fw == 0) {
-			return call_user_func_array("pack", array_merge(array("C*"), $fv));
-		}
-		$dv = array_fill(0, count($fv) + $fw, 0);
-		for ($bh = 0, $fy = 0; $bh < count($fv); $bh++, $fy++) {
-			$fx = self::fu($fv[$bh]);
-			if ($fx != -1) {
-				$dv[$fy] = self::en;
-				$dv[$fy + 1] = $fx;
+		$fx = array_merge(unpack('C*', $b));
+		$fy = 0;
+		for ($bh = 0; $bh < count($fx); $bh++) {
+			$fz = self::fw($fx[$bh]);
+			if ($fz != -1) {
 				$fy++;
-			} else {
-				$dv[$fy] = $fv[$bh];
 			}
 		}
-		return call_user_func_array("pack", array_merge(array("C*"), $dv));
+		if ($fy == 0) {
+			return call_user_func_array("pack", array_merge(array("C*"), $fx));
+		}
+		$dx = array_fill(0, count($fx) + $fy, 0);
+		for ($bh = 0, $g0 = 0; $bh < count($fx); $bh++, $g0++) {
+			$fz = self::fw($fx[$bh]);
+			if ($fz != -1) {
+				$dx[$g0] = self::ep;
+				$dx[$g0 + 1] = $fz;
+				$g0++;
+			} else {
+				$dx[$g0] = $fx[$bh];
+			}
+		}
+		return call_user_func_array("pack", array_merge(array("C*"), $dx));
 	}
-	public static function fz($b)
+	public static function g1($b)
 	{
-		$fv = array_merge(unpack('C*', $b));
-		$fw = 0;
-		if (count($fv) == 0) {
+		$fx = array_merge(unpack('C*', $b));
+		$fy = 0;
+		if (count($fx) == 0) {
 			return $b;
 		}
-		for ($bh = 0; $bh < count($fv); $bh++) {
-			if ($fv[$bh] == self::en) {
-				$fw++;
+		for ($bh = 0; $bh < count($fx); $bh++) {
+			if ($fx[$bh] == self::ep) {
+				$fy++;
 			}
 		}
-		$dv = array_fill(0, count($fv) - $fw, 0);
-		for ($bh = 0, $fy = 0; $bh < count($fv); $bh++, $fy++) {
-			$b9 = $fv[$bh];
-			if ($b9 == self::en) {
-				if ($bh + 1 < count($fv)) {
-					$dv[$fy] = self::g0($fv[$bh + 1]);
-					if ($dv[$fy] == -1) {
+		$dx = array_fill(0, count($fx) - $fy, 0);
+		for ($bh = 0, $g0 = 0; $bh < count($fx); $bh++, $g0++) {
+			$b9 = $fx[$bh];
+			if ($b9 == self::ep) {
+				if ($bh + 1 < count($fx)) {
+					$dx[$g0] = self::g2($fx[$bh + 1]);
+					if ($dx[$g0] == -1) {
 						throw new \InvalidArgumentException();
 					}
 					$bh++;
@@ -761,341 +782,341 @@ class b2
 					throw new \InvalidArgumentException();
 				}
 			} else {
-				$dv[$fy] = $b9;
+				$dx[$g0] = $b9;
 			}
 		}
-		return call_user_func_array("pack", array_merge(array("C*"), $dv));
+		return call_user_func_array("pack", array_merge(array("C*"), $dx));
 	}
-	public static function g1($b, $g2, $g3)
+	public static function g3($b, $g4, $g5)
 	{
-		$du = null;
-		$g4 = strpos($b, chr(self::d9($g2)));
-		$g5 = strpos($b, chr(self::dw), $g4);
-		if ($g4 !== false && $g5 !== false) {
-			$g6 = substr($b, $g4 + 1, $g5 - ($g4 + 1));
-			switch ($g3) {
-				case g7::g8:
-					$du = $g6;
+		$dw = null;
+		$g6 = strpos($b, chr(self::db($g4)));
+		$g7 = strpos($b, chr(self::dy), $g6);
+		if ($g6 !== false && $g7 !== false) {
+			$g8 = substr($b, $g6 + 1, $g7 - ($g6 + 1));
+			switch ($g5) {
+				case g9::ga:
+					$dw = $g8;
 					break;
-				case g7::g9:
-					$du = $g6;
+				case g9::gb:
+					$dw = $g8;
 					break;
-				case g7::ga:
-					$du = $g6;
+				case g9::gc:
+					$dw = $g8;
 					break;
-				case g7::gb:
-					$du = self::ba($g6);
+				case g9::gd:
+					$dw = self::ba($g8);
 					break;
 			}
 		}
-		return $du;
+		return $dw;
 	}
-	public static function ba($gc)
+	public static function ba($ge)
 	{
-		$b = array_merge(unpack("C*", $gc));
-		$dv = 0;
-		$gd = -1;
-		$ck = 0;
-		$ge;
+		$b = array_merge(unpack("C*", $ge));
+		$dx = 0;
+		$gf = -1;
+		$cm = 0;
+		$gg;
 		$b9;
-		$gf = count($b);
+		$gh = count($b);
 		$o = 0;
-		if ($gf == 1) {
+		if ($gh == 1) {
 			return $b[0];
-		} else if ($gf == 2 && $b[$o] == self::en) {
-			$b9 = self::g0($b[$o + 1]);
+		} else if ($gh == 2 && $b[$o] == self::ep) {
+			$b9 = self::g2($b[$o + 1]);
 			if ($b9 != -1) {
 				return $b9;
 			} else {
 				throw new \InvalidArgumentException();
 			}
 		}
-		for (; $gf > 0; $gf--) {
+		for (; $gh > 0; $gh--) {
 			$b9 = $b[$o];
 			$o++;
-			if ($b9 == self::en) {
-				if ($gf - 1 < 0) {
+			if ($b9 == self::ep) {
+				if ($gh - 1 < 0) {
 					throw new \InvalidArgumentException();
 				}
-				$gf--;
+				$gh--;
 				$b9 = $b[$o];
 				$o++;
-				$ge = self::g0($b9);
-				if ($ge == -1) {
+				$gg = self::g2($b9);
+				if ($gg == -1) {
 					throw new \InvalidArgumentException();
 				}
 			} else {
-				$ge = $b9;
+				$gg = $b9;
 			}
-			if ($gd > 0) {
-				$ck |= $ge >> $gd;
-				$dv = $dv << 8 | ($ck >= 0 ? $ck : $ck + 256);
-				$ck = ($ge << (8 - $gd));
+			if ($gf > 0) {
+				$cm |= $gg >> $gf;
+				$dx = $dx << 8 | ($cm >= 0 ? $cm : $cm + 256);
+				$cm = ($gg << (8 - $gf));
 			} else {
-				$ck = ($ge << -$gd);
+				$cm = ($gg << -$gf);
 			}
-			$gd = ($gd + 7) % 8;
+			$gf = ($gf + 7) % 8;
 		}
-		return $dv;
+		return $dx;
 	}
-	public static function dc($ck)
+	public static function de($cm)
 	{
-		if (($ck & 0xFFFFFF80) == 0) {
-			$i = self::fu($ck);
+		if (($cm & 0xFFFFFF80) == 0) {
+			$i = self::fw($cm);
 			if ($i == -1) {
-				return pack('C*', $ck);
+				return pack('C*', $cm);
 			} else {
-				return pack('C*', self::en, $i);
+				return pack('C*', self::ep, $i);
 			}
 		}
-		$gg = 0;
-		if (($ck & 0xFF000000) != 0) {
-			$gg = 24;
-		} else if (($ck & 0x00FF0000) != 0) {
-			$gg = 16;
-		} else {
-			$gg = 8;
-		}
-		$dv = array_fill(0, 10, 0);
-		$gh = 0;
 		$gi = 0;
-		while ($gg >= 0) {
-			$b = (($ck >> $gg) & 0xFF);
-			$gi++;
-			$dv[$gh] |= ($b >= 0 ? $b : $b + 256) >> $gi;
-			$fx = self::fu($dv[$gh]);
-			if ($fx != -1) {
-				$dv[$gh] = self::en;
-				$dv[$gh + 1] = $fx;
-				$gh++;
+		if (($cm & 0xFF000000) != 0) {
+			$gi = 24;
+		} else if (($cm & 0x00FF0000) != 0) {
+			$gi = 16;
+		} else {
+			$gi = 8;
+		}
+		$dx = array_fill(0, 10, 0);
+		$gj = 0;
+		$gk = 0;
+		while ($gi >= 0) {
+			$b = (($cm >> $gi) & 0xFF);
+			$gk++;
+			$dx[$gj] |= ($b >= 0 ? $b : $b + 256) >> $gk;
+			$fz = self::fw($dx[$gj]);
+			if ($fz != -1) {
+				$dx[$gj] = self::ep;
+				$dx[$gj + 1] = $fz;
+				$gj++;
 			}
-			$gh++;
-			$dv[$gh] |= ($b << (7 - $gi)) & 0x7F;
-			$gg -= 8;
+			$gj++;
+			$dx[$gj] |= ($b << (7 - $gk)) & 0x7F;
+			$gi -= 8;
 		}
-		$fx = self::fu($dv[$gh]);
-		if ($fx != -1) {
-			$dv[$gh] = self::en;
-			$dv[$gh + 1] = $fx;
-			$gh++;
+		$fz = self::fw($dx[$gj]);
+		if ($fz != -1) {
+			$dx[$gj] = self::ep;
+			$dx[$gj + 1] = $fz;
+			$gj++;
 		}
-		$gh++;
-		if ($gh < count($dv)) {
-			$dv = array_slice($dv, 0, $gh);
+		$gj++;
+		if ($gj < count($dx)) {
+			$dx = array_slice($dx, 0, $gj);
 		}
-		return call_user_func_array("pack", array_merge(array("C*"), $dv));
+		return call_user_func_array("pack", array_merge(array("C*"), $dx));
 	}
-	public static function g0($b)
+	public static function g2($b)
 	{
-		return $b >= 0 ? self::$ek[$b] : -1;
+		return $b >= 0 ? self::$em[$b] : -1;
 	}
-	public static function fu($b)
+	public static function fw($b)
 	{
-		return $b >= 0 ? self::$el[$b] : -1;
+		return $b >= 0 ? self::$en[$b] : -1;
 	}
-	public static function d9($h)
+	public static function db($h)
 	{
-		return self::$ej[$h];
+		return self::$el[$h];
 	}
-	public static function d5($o)
+	public static function d7($o)
 	{
-		return self::$ei[$o];
+		return self::$ek[$o];
 	}
 }
-class d6
+class d8
 {
-	const ep = 0;
-	const eq = 1;
-	const er = 2;
-	const e9 = 3;
-	const es = 4;
-	const et = 5;
-	const eu = 6;
-	const ev = 7;
-	const ew = 8;
-	const di = 9;
-	const ex = 10;
-	const d7 = 11;
-	const ey = 12;
-	const ez = 13;
+	const er = 0;
+	const es = 1;
+	const et = 2;
+	const eb = 3;
+	const eu = 4;
+	const ev = 5;
+	const ew = 6;
+	const ex = 7;
+	const ey = 8;
+	const dk = 9;
+	const ez = 10;
+	const d9 = 11;
+	const f0 = 12;
+	const f1 = 13;
 }
-class da
+class dc
 {
-	const dj = 0;
-	const dm = 1;
-	const f0 = 2;
-	const f1 = 3;
-	const cv = 4;
-	const dq = 5;
-	const f2 = 6;
-	const f3 = 7;
-	const f4 = 8;
-	const f5 = 9;
-	const f6 = 10;
-	const f7 = 11;
-	const f9 = 12;
-	const db = 13;
-	const fa = 14;
-	const fb = 15;
-	const fc = 16;
-	const ds = 17;
-	const dr = 18;
-	const fd = 19;
-	const fe = 20;
-	const ff = 21;
-	const fg = 22;
-	const fh = 23;
-	const fi = 24;
-	const fj = 25;
-	const dd = 26;
-	const fk = 27;
-	const dp = 28;
-	const f8 = 29;
-	const de = 30;
-	const fl = 31;
-	const dt = 32;
-	const fm = 33;
+	const dl = 0;
+	const dp = 1;
+	const f2 = 2;
+	const f3 = 3;
+	const cx = 4;
+	const ds = 5;
+	const f4 = 6;
+	const f5 = 7;
+	const f6 = 8;
+	const f7 = 9;
+	const f8 = 10;
+	const f9 = 11;
+	const fb = 12;
+	const dd = 13;
+	const fc = 14;
+	const fd = 15;
+	const fe = 16;
+	const du = 17;
+	const dt = 18;
+	const ff = 19;
+	const fg = 20;
+	const fh = 21;
+	const fi = 22;
+	const fj = 23;
+	const fk = 24;
+	const fl = 25;
+	const df = 26;
+	const fm = 27;
+	const dr = 28;
+	const fa = 29;
+	const dg = 30;
+	const fo = 31;
+	const dv = 32;
+	const fp = 33;
 }
-class g7
+class g9
 {
-	const g8 = 0;
-	const g9 = 1;
-	const ga = 2;
-	const gb = 3;
+	const ga = 0;
+	const gb = 1;
+	const gc = 2;
+	const gd = 3;
 }
-class fo
+class fq
 {
-	const fp = 0x00;
-	const fs = 0x22;
-	const fq = 0x0A;
-	const fr = 0x0D;
-	const ft = 0x5C;
+	const fr = 0x00;
+	const fu = 0x22;
+	const fs = 0x0A;
+	const ft = 0x0D;
+	const fv = 0x5C;
 }
-class cw
+class cy
 {
-	const d0 = 4;
-	const cx = 8;
+	const d2 = 4;
+	const cz = 8;
 }
-class gj
+class gl
 {
-	const gk = 0;
-	const gl = 1;
-	const gm = 2;
-	const gn = 3;
+	const gm = 0;
+	const gn = 1;
+	const go = 2;
+	const gp = 3;
 }
-b2::eo();
-class e7
+b2::eq();
+class e9
 {
-	const go = '/^\/([^\/]+\/)*([^\/]+|\*)$/';
-	const gp = "\r\n\r\n";
-	const co = "Content-Length: ";
-	public static function gq($g6)
+	const gq = '/^\/([^\/]+\/)*([^\/]+|\*)$/';
+	const gr = "\r\n\r\n";
+	const cq = "Content-Length: ";
+	public static function gs($g8)
 	{
-		return preg_match(self::go, $g6);
+		return preg_match(self::gq, $g8);
 	}
-	public static function gr($az)
+	public static function gt($az)
 	{
-		$gs = array();
+		$gu = array();
 		$o = $az->m();
-		$gt = ord($az->q($o));
+		$gv = ord($az->q($o));
 		$o++;
 		while (true) {
-			$du = ord($az->q($o));
+			$dw = ord($az->q($o));
 			$o++;
-			$bh = strpos($az->a0(), chr(b2::dw), $o);
+			$bh = strpos($az->a0(), chr(b2::dy), $o);
 			if ($bh === false) {
 				break;
 			}
-			$fv = substr($az->a0(), $o, ($bh - $o));
-			if ($du == b2::d9(da::dq)) {
-				$gs['session'] = b2::ba($fv);
-			} else if ($du == b2::d9(da::fa)) {
-				$gs['reason'] = $fv;
-			} else if ($du == b2::d9(da::fl)) {
-                $gs['message_size'] = b2::ba($fv);
-            } else if ($du == b2::d9(da::fm)) {
-				$gs['error'] = b2::ba($fv);
+			$fx = substr($az->a0(), $o, ($bh - $o));
+			if ($dw == b2::db(dc::ds)) {
+				$gu['session'] = b2::ba($fx);
+			} else if ($dw == b2::db(dc::fc)) {
+				$gu['reason'] = $fx;
+			} else if ($dw == b2::db(dc::fo)) {
+                $gu['message_size'] = b2::ba($fx);
+            } else if ($dw == b2::db(dc::fp)) {
+				$gu['error'] = b2::ba($fx);
 			}
 			$o = $bh + 1;
 			if ($o >= $az->a3()) {
 				break;
 			}
 		}
-		return $gs;
+		return $gu;
 	}
-	public static function e8($b)
+	public static function ea($b)
 	{
-		$gu = b2::cq(e7::co);
-		$o = e7::gv($gu, $b);
+		$gw = b2::cs(e9::cq);
+		$o = e9::gx($gw, $b);
 		if ($o == -1) {
 			return -1;
 		}
-		$o += strlen($gu);
-		$gw = "\r";
-		$gx = e7::gy($b, $o, strlen($b), $gw);
-		if ($gx == -1) {
+		$o += strlen($gw);
+		$gy = "\r";
+		$gz = e9::h0($b, $o, strlen($b), $gy);
+		if ($gz == -1) {
 			return -1;
 		}
-		$gz = substr($b, $o, $gx - $o);
-		$h0 = intval($gz);
-		$o = e7::gv(e7::gp, $b);
+		$h1 = substr($b, $o, $gz - $o);
+		$h2 = intval($h1);
+		$o = e9::gx(e9::gr, $b);
 		if ($o == -1) {
 			return $o;
 		}
-		$o += strlen(e7::gp);
-		if (($o + $h0) > strlen($b)) {
+		$o += strlen(e9::gr);
+		if (($o + $h2) > strlen($b)) {
 			return -1;
 		}
 		return $o;
 	}
-	private static function gy($b, $at, $au, $h1)
+	private static function h0($b, $at, $au, $h3)
 	{
 		for ($bh = $at; $bh < $au; $bh++) {
-			if ($b[$bh] == $h1) {
+			if ($b[$bh] == $h3) {
 				return $bh;
 			}
 		}
 		return -1;
 	}
-	private static function gv($h2, $h3)
+	private static function gx($h4, $h5)
 	{
-		$h4 = strlen($h2);
-		$cl = strlen($h3);
-		$h5 = array_fill(0, $h4, 0);
-		e7::h6($h2, $h4, $h5);
+		$h6 = strlen($h4);
+		$cn = strlen($h5);
+		$h7 = array_fill(0, $h6, 0);
+		e9::h8($h4, $h6, $h7);
 		$bh = 0;
-		$fy = 0;
-		while ($bh < $cl) {
-			if ($h2[$fy] == $h3[$bh]) {
-				$fy++;
+		$g0 = 0;
+		while ($bh < $cn) {
+			if ($h4[$g0] == $h5[$bh]) {
+				$g0++;
 				$bh++;
 			}
-			if ($fy == $h4) {
-				return $bh - $fy;
-			} else if ($bh < $cl && $h2[$fy] != $h3[$bh]) {
-				if ($fy != 0)
-					$fy = $h5[$fy - 1];
+			if ($g0 == $h6) {
+				return $bh - $g0;
+			} else if ($bh < $cn && $h4[$g0] != $h5[$bh]) {
+				if ($g0 != 0)
+					$g0 = $h7[$g0 - 1];
 				else
 					$bh = $bh + 1;
 			}
 		}
 		return -1;
 	}
-	private static function h6($h2, $h4, &$h5)
+	private static function h8($h4, $h6, &$h7)
 	{
-		$gf = 0;
-		$h5[0] = 0;
+		$gh = 0;
+		$h7[0] = 0;
 		$bh = 1;
-		while ($bh < $h4) {
-			if ($h2[$bh] == $h2[$gf]) {
-				$gf++;
-				$h5[$bh] = $gf;
+		while ($bh < $h6) {
+			if ($h4[$bh] == $h4[$gh]) {
+				$gh++;
+				$h7[$bh] = $gh;
 				$bh++;
 			} else {
-				if ($gf != 0) {
-					$gf = $h5[$gf - 1];
+				if ($gh != 0) {
+					$gh = $h7[$gh - 1];
 				} else {
-					$h5[$bh] = 0;
+					$h7[$bh] = 0;
 					$bh++;
 				}
 			}
@@ -1104,8 +1125,8 @@ class e7
 }
 class Version
 {
-        //      6       h7   xx   h7 xxx
-    // push version h7 API ID h7 API version
+        //      6       h9   xx   h9 xxx
+    // push version h9 API ID h9 API version
     // ex: for Java with API ID 00 and version 001 => 600001
     // ex: for C# with API ID 02 and version 006 => 602006
     // Java - 00
@@ -1121,241 +1142,246 @@ class Version
     // Android - 10
 	const VERSION = 6;
 }
-class h8
+class ha
 {
-	private $h9 = 3;
-	private $de = Version::VERSION;
-	private $e4 = 1000;
+	private $hb = 3;
+	private $dg = Version::VERSION;
+	private $e6 = 1000;
 	private $ac = false;
 	private $a8 = null;
-	private $ha = null;
-	private $d2 = null;
-	private $hb = null;
 	private $hc = null;
-	private $cy = null;
-	private $e2 = null;
+	private $d4 = null;
 	private $hd = null;
 	private $he = null;
-	private $dh = -1;
-	private $hf = false;
+	private $d0 = null;
+	private $e4 = null;
+	private $hf = null;
 	private $hg = null;
+	private $dj = -1;
+	private $hh = false;
+	private $hi = null;
+	private $bq = [];
 	public function __construct()
 	{
-		$this->cy = MigratoryDataClient::TRANSPORT_WEBSOCKET;
-		$this->hb = new bt();
-		$this->hc = new cu();
+		$this->d0 = MigratoryDataClient::TRANSPORT_WEBSOCKET;
+		$this->hd = new bu();
+		$this->he = new cw();
 	}
-	public function hh($hi = null)
+	public function hj($hk = null)
 	{
-		if (is_null($hi)) {
-			$hj = array();
-			$hk = true;
-			foreach ($this->ha->ao() as $hl) {
+		if (is_null($hk)) {
+			$hl = array();
+			$hm = true;
+			foreach ($this->hc->ao() as $hn) {
 				try {
-					$this->hh($hl);
-					$hk = false;
+					$this->hj($hn);
+					$hm = false;
 					break;
-				} catch (MigratoryDataException $hm) {
-					$hj[] = $hm;
+				} catch (MigratoryDataException $ho) {
+					$hl[] = $ho;
 				}
 			}
-			if ($hk == true) {
-				throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $hj);
+			if ($hm == true) {
+				throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $hl);
 			}
 		} else {
-			$this->a8 = $hi->ah();
-			$this->hn($this->a8, $hi->ai());
-			$this->hd = new e0($this->e2, $this->cy, $this->e4);
-			$this->he = new ed($this->e2);
-			$this->ho();
-			$this->hp($hi->aj());
-			$this->hf = true;
+			$this->a8 = $hk->ah();
+			$this->hp($this->a8, $hk->ai());
+			$this->hf = new e2($this->e4, $this->d0, $this->e6);
+			$this->hg = new ef($this->e4);
+			$this->hq();
+			$this->hr($hk->aj());
+			$this->hh = true;
 		}
 	}
-	private function hn($a8, $a9)
+	private function hp($a8, $a9)
 	{
 		if ($this->ac) {
-			$hq = @stream_context_create();
-			$hr = @stream_context_set_option($hq, 'ssl', 'allow_self_signed', true);
-			if (!$hr) {
+			$hs = @stream_context_create();
+			$ht = @stream_context_set_option($hs, 'ssl', 'allow_self_signed', true);
+			if (!$ht) {
 				throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, "ssl socket creation");
 			}
-			$this->e2 = @stream_socket_client("tlsv1.2://" . $a8 . ":" . $a9, $hs, $ht,
-				$this->e4 / 1000, STREAM_CLIENT_CONNECT, $hq);
+			$this->e4 = @stream_socket_client("tlsv1.2://" . $a8 . ":" . $a9, $hu, $hv,
+				$this->e6 / 1000, STREAM_CLIENT_CONNECT, $hs);
 		} else {
-			$this->e2 = @stream_socket_client("tcp://" . $a8 . ":" . $a9, $hs, $ht,
-				$this->e4 / 1000);
+			$this->e4 = @stream_socket_client("tcp://" . $a8 . ":" . $a9, $hu, $hv,
+				$this->e6 / 1000);
 		}
-		if (!$this->e2) {
-			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, $ht);
+		if (!$this->e4) {
+			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, $hv);
 		}
-		$hu = @stream_set_timeout($this->e2, floor($this->e4 / 1000), (($this->e4 % 1000) * 1000));
-		if ($hu === false) {
+		$hw = @stream_set_timeout($this->e4, floor($this->e6 / 1000), (($this->e6 % 1000) * 1000));
+		if ($hw === false) {
 			throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, "Socket set timeout error");
 		}
 	}
-	private function ho()
+	private function hq()
 	{
-		if ($this->cy !== MigratoryDataClient::TRANSPORT_HTTP) {
-			$az = $this->hb->br($this->a8, $this->ac);
-			$hv = $this->he->ee($az->a0());
-			if ($hv === true) {
-				$hv = $this->hd->e5();
+		if ($this->d0 !== MigratoryDataClient::TRANSPORT_HTTP) {
+			$az = $this->hd->bs($this->a8, $this->ac, $this->bq);
+			$hx = $this->hg->eg($az->a0());
+			if ($hx === true) {
+				$hx = $this->hf->e7();
 			}
-			if ($hv == false) {
-				$this->hw();
+			if ($hx == false) {
+				$this->hy();
 				throw new MigratoryDataException(MigratoryDataException::E_TRANSPORT_INIT_FAILED, "Websocket handshake");
 			}
 		}
 	}
-	private function hp($ab)
+	private function hr($ab)
 	{
-		$az = $this->hb->bp($this->a8);
-		$this->hc->d1($az, $this->d2, $this->h9, $this->de);
-		$this->hb->bq($az);
-		$hv = $this->he->ee($az->a2());
-		if ($hv === true) {
-			$hv = $this->hd->e5();
+		$az = $this->hd->bp($this->a8, $this->bq);
+		$this->he->d3($az, $this->d4, $this->hb, $this->dg);
+		$this->hd->br($az);
+		$hx = $this->hg->eg($az->a2());
+		if ($hx === true) {
+			$hx = $this->hf->e7();
 		}
-		if ($hv == false) {
-			$this->hw();
+		if ($hx == false) {
+			$this->hy();
 			throw new MigratoryDataException(MigratoryDataException::E_CONNECTION_FAILED, $ab . ', socket_error');
 		} else {
-			$headers = e7::gr($hv);
-			if (array_key_exists('error', $headers) && $headers['error'] == gj::gn) {
-				$hx = '';
+			$headers = e9::gt($hx);
+			if (array_key_exists('error', $headers) && $headers['error'] == gl::gp) {
+				$hz = '';
 				if (array_key_exists('reason', $headers)) {
-					$hx = $headers['reason'];
+					$hz = $headers['reason'];
 				}
-				throw new MigratoryDataException(MigratoryDataException::E_CONNECTION_DENY, $ab . ", Got connect response: " . $hx);
+				throw new MigratoryDataException(MigratoryDataException::E_CONNECTION_DENY, $ab . ", Got connect response: " . $hz);
 			}
 			if (array_key_exists('session', $headers)) {
-				$this->dh = $headers['session'];
+				$this->dj = $headers['session'];
                 if (array_key_exists('message_size', $headers)) {
-                    $this->hg = $headers['message_size'];
+                    $this->hi = $headers['message_size'];
                 }
 			} else {
-				$this->hw();
-				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, $ab . ", Got connect response: " . $hv);
+				$this->hy();
+				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, $ab . ", Got connect response: " . $hx);
 			}
 		}
 	}
-	public function hy()
+	public function i0()
 	{
-		$this->hf = false;
-		$this->hw();
+		$this->hh = false;
+		$this->hy();
 	}
-	private function hw()
+	private function hy()
 	{
-		$this->dh = -1;
-		if ($this->e2 != null) {
-			@fclose($this->e2);
+		$this->dj = -1;
+		if ($this->e4 != null) {
+			@fclose($this->e4);
 		}
-		$this->e2 = null;
-		$this->hd = null;
-		$this->he = null;
+		$this->e4 = null;
+		$this->hf = null;
+		$this->hg = null;
 	}
-	public function hz($dg)
+	public function i1($di)
 	{
-		$i0 = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
-		if ($this->dh == -1) {
-			$this->hw();
+		$i2 = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
+		if ($this->dj == -1) {
+			$this->hy();
 			try {
-				$this->hh();
-			} catch (MigratoryDataException $hm) {
-				return $i0;
+				$this->hj();
+			} catch (MigratoryDataException $ho) {
+				return $i2;
 			}
 		}
-		$az = $this->hb->bp($this->a8);
-		$this->hc->df($az, $dg, $this->dh);
-		$this->hb->bq($az);
-        if (isset($this->hg) && ($az->a3() - $az->m()) > $this->hg) {
+		$az = $this->hd->bp($this->a8, $this->bq);
+		$this->he->dh($az, $di, $this->dj);
+		$this->hd->br($az);
+        if (isset($this->hi) && ($az->a3() - $az->m()) > $this->hi) {
             return MigratoryDataClient::NOTIFY_MESSAGE_SIZE_LIMIT_EXCEEDED;
         }
-		$hv = $this->he->ee($az->a2());
-		if ($hv === true) {
-			$hv = $this->hd->e5();
+		$hx = $this->hg->eg($az->a2());
+		if ($hx === true) {
+			$hx = $this->hf->e7();
 		}
-		if ($hv == false) {
-			$this->hw();
-			return $i0;
+		if ($hx == false) {
+			$this->hy();
+			return $i2;
 		} else {
-			$headers = e7::gr($hv);
+			$headers = e9::gt($hx);
 			if (array_key_exists('reason', $headers)) {
 				$reason = $headers['reason'];
 				if ("OK" == $reason) {
-					$i0 = MigratoryDataClient::NOTIFY_PUBLISH_OK;
+					$i2 = MigratoryDataClient::NOTIFY_PUBLISH_OK;
 				} else if ("DENY" == $reason) {
-					$i0 = MigratoryDataClient::NOTIFY_PUBLISH_DENIED;
+					$i2 = MigratoryDataClient::NOTIFY_PUBLISH_DENIED;
 				} else {
-					$i0 = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
+					$i2 = MigratoryDataClient::NOTIFY_PUBLISH_FAILED;
 				}
 			} else {
-				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "Got publish response: " . $hv . strlen($hv));
+				throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "Got publish response: " . $hx . strlen($hx));
 			}
 		}
-		return $i0;
+		return $i2;
 	}
-	public function i1($am)
+	public function i3($am)
 	{
-		$this->ha = new ak($am, $this->ac);
+		$this->hc = new ak($am, $this->ac);
 	}
-	public function i2($d2)
+	public function i4($d4)
 	{
-		$this->d2 = $d2;
+		$this->d4 = $d4;
 	}
-	public function i3($e4)
+	public function i5($e6)
 	{
-		$this->e4 = $e4;
+		$this->e6 = $e6;
 	}
-	public function i4($ac)
+	public function i6($ac)
 	{
 		$this->ac = $ac;
-		if (!is_null($this->ha)) {
-			$this->ha->ap($ac);
+		if (!is_null($this->hc)) {
+			$this->hc->ap($ac);
 		}
 	}
-	public function i5($cy)
+	public function i7($d0)
 	{
-		if ($cy === MigratoryDataClient::TRANSPORT_HTTP) {
-			$this->cy = $cy;
-			$this->hb = new cm();
-			$this->hc->cz();
+		if ($d0 === MigratoryDataClient::TRANSPORT_HTTP) {
+			$this->d0 = $d0;
+			$this->hd = new co();
+			$this->he->d1();
 		}
 	}
-	public function i6()
+	public function i8($i9, $p)
 	{
-		return $this->ha;
+		$this->bq[$i9] = $p;
 	}
-	public function i7()
+	public function ia()
 	{
-		return $this->d2;
+		return $this->hc;
 	}
-	public function i8()
+	public function ib()
 	{
-		return $this->hf;
+		return $this->d4;
+	}
+	public function ic()
+	{
+		return $this->hh;
 	}
 }
-class i9
+class id
 {
-	private $ia = null;
+	private $ie = null;
 	public function __construct()
 	{
-		$this->ia = new h8();
+		$this->ie = new ha();
 	}
-	public function ib($ic)
+	public function ig($ih)
 	{
-		if ($this->ia->i8() === true) {
+		if ($this->ie->ic() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setEntitlementToken() method");
 		}
-		if (trim($ic) === '') {
+		if (trim($ih) === '') {
 			throw  new MigratoryDataException(MigratoryDataException::E_ENTITLEMENT_TOKEN);
 		}
-		$this->ia->i2($ic);
+		$this->ie->i4($ih);
 	}
-	public function id($am)
+	public function ii($am)
 	{
-		if ($this->ia->i8() === true) {
+		if ($this->ie->ic() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setServers() method");
 		}
 		if (!is_array($am) || count($am) == 0) {
@@ -1366,74 +1392,87 @@ class i9
 				throw new MigratoryDataException(MigratoryDataException::E_INVALID_URL, $addr);
 			}
 		}
-		$this->ia->i1($am);
+		$this->ie->i3($am);
 	}
-	public function hh()
+	public function hj()
 	{
-		if ($this->ia->i8() === true) {
+		if ($this->ie->ic() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "connect() method");
 		}
-		$d2 = $this->ia->i7();
-		if (!isset($d2)) {
+		$d4 = $this->ie->ib();
+		if (!isset($d4)) {
 			throw  new MigratoryDataException(MigratoryDataException::E_ENTITLEMENT_TOKEN);
 		}
-		$ha = $this->ia->i6();
-		if (!isset($ha)) {
+		$hc = $this->ie->ia();
+		if (!isset($hc)) {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_URL_LIST, "Before connect() you need to use setServers().");
 		}
 		try {
-			$this->ia->hh();
+			$this->ie->hj();
 		} catch (MigratoryDataException $e) {
 			throw new MigratoryDataException(MigratoryDataException::E_CLUSTER_MEMBERS_CONNECTION_FAILED, "", $e->getExceptions());
 		}
 	}
-	public function hw()
+	public function hy()
 	{
-		if ($this->ia->i8() === true) {
-			$this->ia->hy();
+		if ($this->ie->ic() === true) {
+			$this->ie->i0();
 		}
 	}
-	public function hz($dg)
+	public function i1($di)
 	{
-		if ($this->ia->i8() === false) {
+		if ($this->ie->ic() === false) {
 			throw new MigratoryDataException(MigratoryDataException::E_NOT_CONNECTED, "publish() method");
 		}
-		if (is_null($dg)) {
+		if (is_null($di)) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_NULL);
 		}
-		if (!($dg instanceof MigratoryDataMessage)) {
+		if (!($di instanceof MigratoryDataMessage)) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_INVALID);
 		}
-		$ie = $dg->getSubject();
-		$dx = $dg->getContent();
-		if (is_null($ie) || strlen($ie) == 0) {
+		$ij = $di->getSubject();
+		$dz = $di->getContent();
+		if (is_null($ij) || strlen($ij) == 0) {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, "subject is empty");
 		}
-		if (is_null($dx) || strlen($dx) == 0) {
+		if (is_null($dz) || strlen($dz) == 0) {
 			throw new MigratoryDataException(MigratoryDataException::E_MSG_NULL, "content of the message is null");
 		}
-		return $this->ia->hz($dg);
+		return $this->ie->i1($di);
 	}
-	public function ig($ih)
+	public function ik($il)
 	{
-		if ($this->ia->i8() === true) {
+		if ($this->ie->ic() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setTransport() method");
 		}
-		$this->ia->i5($ih);
+		$this->ie->i7($il);
 	}
-	public function i4($bs)
+	public function i8($i9, $p)
 	{
-		if ($this->ia->i8() === true) {
+		if ($this->ie->ic() === true) {
+			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "i8() method");
+		}
+		if (is_null($i9) || strlen($i9) == 0) {
+			throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "i8() - name is empty");
+		}
+		if (is_null($p) || strlen($p) == 0) {
+			throw new MigratoryDataException(MigratoryDataException::E_INVALID_PROTOCOL, "i8() - value is empty");
+		}
+		$this->ie->i8($i9, $p);
+	}
+	public function i6($bt)
+	{
+		if ($this->ie->ic() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setEncryption() method");
 		}
-		$this->ia->i4($bs);
+		$this->ie->i6($bt);
 	}
-	public function ii($e4)
+	public function im($e6)
 	{
-		if ($this->ia->i8() === true) {
+		if ($this->ie->ic() === true) {
 			throw new MigratoryDataException(MigratoryDataException::E_RUNNING, "setConnectionTimeout() method");
 		}
-		$this->ia->i3($e4);
+		$this->ie->i5($e6);
 	}
 }
 class MigratoryDataException extends \Exception
@@ -1451,13 +1490,13 @@ class MigratoryDataException extends \Exception
 	const E_RUNNING = 12;
 	const E_NOT_CONNECTED = 13;
 	const E_CONNECTION_DENY = 14;
-	protected $hj = array();
-	protected $ij = "";
+	protected $hl = array();
+	protected $in = "";
 	protected $code = -1;
 	protected $message = "";
 	public function getCause()
 	{
-		return $this->ij;
+		return $this->in;
 	}
 	public function getDetail()
 	{
@@ -1465,13 +1504,13 @@ class MigratoryDataException extends \Exception
 	}
 	public function getExceptions()
 	{
-		return $this->hj;
+		return $this->hl;
 	}
 	public function __construct($code, $cause = "", $exceptions = array())
 	{
 		$this->code = $code;
-		$this->ij = $cause;
-		$this->hj = $exceptions;
+		$this->in = $cause;
+		$this->hl = $exceptions;
 		$this->message = $this->getErrorInfo($code);
 	}
 	private function getErrorInfo($errorCode)
@@ -1531,45 +1570,45 @@ class QoS
 }
 class MigratoryDataMessage
 {
-	private $ie = "";
-	private $dx = "";
-	private $ik = null;
-	private $il = null;
-    protected $im;
+	private $ij = "";
+	private $dz = "";
+	private $io = null;
+	private $ip = null;
+    protected $iq;
     public function __construct($subject, $content, $qos = QoS::GUARANTEED, $retained = true)
 	{
-		if (e7::gq($subject)) {
-			$this->ie = $subject;
-			$this->dx = $content;
-			$this->ik = $qos;
-			$this->il = $retained;
+		if (e9::gs($subject)) {
+			$this->ij = $subject;
+			$this->dz = $content;
+			$this->io = $qos;
+			$this->ip = $retained;
 		} else {
 			throw new MigratoryDataException(MigratoryDataException::E_INVALID_SUBJECT, $subject);
 		}
 	}
 	public function getSubject()
 	{
-		return $this->ie;
+		return $this->ij;
 	}
 	public function getContent()
 	{
-		return $this->dx;
+		return $this->dz;
 	}
 	public function getQos()
 	{
-		return $this->ik;
+		return $this->io;
 	}
 	public function isRetained()
 	{
-		return $this->il;
+		return $this->ip;
 	}
     public function setCompressed($compressionBool)
     {
-        $this->im = $compressionBool;
+        $this->iq = $compressionBool;
     }
     public function isCompressed()
     {
-        return $this->im;
+        return $this->iq;
     }
 }
 class MigratoryDataClient
@@ -1580,41 +1619,45 @@ class MigratoryDataClient
     const NOTIFY_PUBLISH_DENIED = 'NOTIFY_PUBLISH_DENIED';
 	const TRANSPORT_HTTP = 'TRANSPORT_HTTP';
 	const TRANSPORT_WEBSOCKET = 'TRANSPORT_WEBSOCKET';
-	private $in = null;
+	private $ir = null;
 	public function __construct()
 	{
-		$this->in = new i9();
+		$this->ir = new id();
 	}
-	public function setEntitlementToken($ic)
+	public function setEntitlementToken($ih)
 	{
-		$this->in->ib($ic);
+		$this->ir->ig($ih);
 	}
 	public function setServers($am)
 	{
-		$this->in->id($am);
+		$this->ir->ii($am);
 	}
 	public function connect()
 	{
-		$this->in->hh();
+		$this->ir->hj();
 	}
 	public function disconnect()
 	{
-		$this->in->hw();
+		$this->ir->hy();
 	}
-	public function publish($dg)
+	public function publish($di)
 	{
-		return $this->in->hz($dg);
+		return $this->ir->i1($di);
 	}
-	public function setTransport($ih)
+	public function setTransport($il)
 	{
-		$this->in->ig($ih);
+		$this->ir->ik($il);
 	}
-	public function setEncryption($bs)
+	public function setHttpHeader($i9, $p)
 	{
-		$this->in->i4($bs);
+		$this->ir->i8($i9, $p);
 	}
-	public function setConnectionTimeout($e4)
+	public function setEncryption($bt)
 	{
-		$this->in->ii($e4);
+		$this->ir->i6($bt);
+	}
+	public function setConnectionTimeout($e6)
+	{
+		$this->ir->im($e6);
 	}
 }
