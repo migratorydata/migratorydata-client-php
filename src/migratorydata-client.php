@@ -508,9 +508,14 @@ class cw
 		}
 		$az->j($this->da(b2::db(dc::dl), b2::cs($di->getSubject()), $az));
         if ($di->isCompressed()) {
-            $dm = $this->dn($di->getContent());
-            if (strlen($dm) < strlen($di->getContent())) {
-                $az->j($this->da(b2::db(dc::dp), b2::cs($dm), $az));
+			$b = $di->getContent();
+			if ($di->getCompressionAlgorithm() == CompressionAlgorithm::ZLIB_BASE64) {
+				$b = $this->dm($di->getContent());
+			} else if ($di->getCompressionAlgorithm() == CompressionAlgorithm::ZLIB_BINARY) {
+				$b = $this->dn($di->getContent());
+			}
+            if (strlen($b) < strlen($di->getContent())) {
+                $az->j($this->da(b2::db(dc::dp), b2::cs($b), $az));
             } else {
                 $az->j($this->da(b2::db(dc::dp), b2::cs($di->getContent()), $az));
                 $di->setCompressed(false);
@@ -534,7 +539,7 @@ class cw
 			$az->j($this->da(b2::db(dc::du), b2::de(0), $az));
 		}
         if ($di->isCompressed()) {
-            $az->j($this->da(b2::db(dc::dv), b2::de(1), $az));
+            $az->j($this->da(b2::db(dc::dv), b2::de($di->getCompressionAlgorithm()), $az));
         }
 		$az->j($this->da(b2::db(dc::cx), b2::de($this->cx), $az));
 		if ($this->d0 == MigratoryDataClient::TRANSPORT_HTTP) {
@@ -559,7 +564,7 @@ class cw
 		}
 		return $dx;
 	}
-    public function dn($dz)
+    public function dm($dz)
     {
         $e0 = gzdeflate($dz);
         if ($e0 === false) {
@@ -567,6 +572,14 @@ class cw
         }
         $e1 = base64_encode($e0);
         return $e1;
+    }
+    public function dn($dz)
+    {
+        $e0 = gzdeflate($dz);
+        if ($e0 === false) {
+            return $dz;
+        }
+		return $e0;
     }
 }
 class e2
@@ -711,7 +724,7 @@ class b2
 		self::$el[dc::fo] = 0x1D;
 		self::$el[dc::dv] = 0x26;
 		self::$el[dc::fp] = 0x0B;
-		self::$en = array_fill(0, 255, -1);
+		self::$en = array_fill(0, 256, -1);
 		self::$en[self::b3] = 0x01;
 		self::$en[self::dy] = 0x02;
 		self::$en[self::ep] = 0x03;
@@ -1036,6 +1049,8 @@ class e9
                 $gu['message_size'] = b2::ba($fx);
             } else if ($dw == b2::db(dc::fp)) {
 				$gu['error'] = b2::ba($fx);
+			} else if ($dw == b2::db(dc::dg)) {
+				$gu['server_version'] = b2::ba($fx);
 			}
 			$o = $bh + 1;
 			if ($o >= $az->a3()) {
@@ -1125,29 +1140,15 @@ class e9
 }
 class Version
 {
-        //      6       h9   xx   h9 xxx
-    // push version h9 API ID h9 API version
-    // ex: for Java with API ID 00 and version 001 => 600001
-    // ex: for C# with API ID 02 and version 006 => 602006
-    // Java - 00
-    // Javascript Legacy - 01
-    // C# - 02
-    // C++ - 03
-    // iOS - 04
-    // Python - 05
-    // PHP Pub - 06
-    // PHP React - 07
-    // NodeJS - 08
-    // Javascript-Browser - 09
-    // Android - 10
-	const VERSION = 6;
+	const VERSION = 7;
 }
-class ha
+class h9
 {
-	private $hb = 3;
+	private $ha = 3;
 	private $dg = Version::VERSION;
 	private $e6 = 1000;
 	private $ac = false;
+	private $hb = 0;
 	private $a8 = null;
 	private $hc = null;
 	private $d4 = null;
@@ -1233,7 +1234,7 @@ class ha
 	private function hr($ab)
 	{
 		$az = $this->hd->bp($this->a8, $this->bq);
-		$this->he->d3($az, $this->d4, $this->hb, $this->dg);
+		$this->he->d3($az, $this->d4, $this->ha, $this->dg);
 		$this->hd->br($az);
 		$hx = $this->hg->eg($az->a2());
 		if ($hx === true) {
@@ -1255,6 +1256,9 @@ class ha
 				$this->dj = $headers['session'];
                 if (array_key_exists('message_size', $headers)) {
                     $this->hi = $headers['message_size'];
+                }
+                if (array_key_exists('server_version', $headers)) {
+                    $this->hb = $headers['server_version'];
                 }
 			} else {
 				$this->hy();
@@ -1287,6 +1291,9 @@ class ha
 			} catch (MigratoryDataException $ho) {
 				return $i2;
 			}
+		}
+		if ($di->getCompressionAlgorithm() == CompressionAlgorithm::ZLIB_BINARY && $this->hb == 0) {
+			$di->setCompressionAlgorithm(CompressionAlgorithm::NONE);
 		}
 		$az = $this->hd->bp($this->a8, $this->bq);
 		$this->he->dh($az, $di, $this->dj);
@@ -1367,7 +1374,7 @@ class id
 	private $ie = null;
 	public function __construct()
 	{
-		$this->ie = new ha();
+		$this->ie = new h9();
 	}
 	public function ig($ih)
 	{
@@ -1568,13 +1575,19 @@ class QoS
 	const STANDARD = 0;
 	const GUARANTEED = 1;
 }
+class CompressionAlgorithm
+{
+	const NONE = 0;
+	const ZLIB_BASE64 = 1;
+	const ZLIB_BINARY = 2;
+}
 class MigratoryDataMessage
 {
 	private $ij = "";
 	private $dz = "";
 	private $io = null;
 	private $ip = null;
-    protected $iq;
+    protected $iq = CompressionAlgorithm::NONE;
     public function __construct($subject, $content, $qos = QoS::GUARANTEED, $retained = true)
 	{
 		if (e9::gs($subject)) {
@@ -1604,12 +1617,31 @@ class MigratoryDataMessage
 	}
     public function setCompressed($compressionBool)
     {
-        $this->iq = $compressionBool;
+		if ($compressionBool) {
+			if ($this->iq != CompressionAlgorithm::ZLIB_BINARY) {
+				$this->iq = CompressionAlgorithm::ZLIB_BASE64;
+			}
+		} else {
+			$this->iq = CompressionAlgorithm::NONE;
+		}
+    }
+    public function setCompressionAlgorithm($alg)
+    {
+		if ($alg == CompressionAlgorithm::ZLIB_BASE64) {
+			$this->iq = CompressionAlgorithm::ZLIB_BASE64;
+		} else if ($alg == CompressionAlgorithm::ZLIB_BINARY) {
+			$this->iq = CompressionAlgorithm::ZLIB_BINARY;
+		} else {
+			$this->iq = CompressionAlgorithm::NONE;
+		}
     }
     public function isCompressed()
     {
-        return $this->iq;
+        return $this->iq != CompressionAlgorithm::NONE;
     }
+	public function getCompressionAlgorithm() {
+		return $this->iq;
+	}
 }
 class MigratoryDataClient
 {
